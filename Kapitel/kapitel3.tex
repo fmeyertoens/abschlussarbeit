@@ -1,0 +1,53 @@
+\section{Das REST Architekturkonzept}
+\subsection{Entstehung}
+\begin{itemize}
+  \item Bekanntmachung Roy T. Fielding in Dissertation 2000
+  \item Akronym für Representational State Transfer
+  \item Prinzipien für die Entwicklung von verteilten Systemen. Baut auf bekannten Architekturen auf (Client-Server)
+\end{itemize}
+
+\subsection{Grundlagen}
+\begin{itemize}
+  \item Ziele von REST
+  \begin{itemize}
+    \item skalierbare Komponenteninteraktionen
+    \item generische Interfaces
+    \item unabhängige Entwicklung der Komponenten
+    \item Zwischenkomponenten können spezielle Aufgaben übernehmen (Cache, Sicherheit, Schnittstelle zu Altsystemen)
+  \end{itemize}
+  \item REST hatte Einfluss (und macht Gebrauch von) HTTP und URI (IRI)
+  \item REST ist zustandslos (daher auch client-stateless-server). Jeder Request von Client zu Server beinhaltet alle notwendigen Informationen, um den Request zu verstehen.
+  \item Client speichert gewöhnlich Zustand. Server behält keine Clientsession bei.
+  \item Vorteile
+  \begin{itemize}
+    \item Sichtbarkeit: Requests können einzeln untersucht werden
+    \item Zuverlässigkeit: einfachere Wiederherstellung bei teilweisen Fehlern
+    \item Skalierbarkeit: Server kann schnell Ressourcen wieder freigeben. Speichert keine Zustände
+  \end{itemize}
+  \item Nachteile
+  \begin{itemize}
+    \item verringerte Netzwerkperformance, da mit jedem Request Daten wiederholt
+    \item verringerte Kontrolle des Servers über Verhalten der Clientanwendung
+  \end{itemize}
+  \item Clientseitiges Caching
+  \begin{itemize}
+    \item Ressourcen implizit oder explizit gecacht
+    \item erlaubt Wiederverwendung früherer Serverantworten für zukünftige, gleiche Requests
+    \item bessere Effizienz und Skalierbarkeit, erhöhte gefühlte Performance durch Verringerung der durchschnittlichen Latenz (jede einzelne Latenz durch Cache-Lookup erhöht)
+    \item verringerte Verlässlichkeit je stärker gecachte Daten von tatsächlichen Daten abweichen
+  \end{itemize}
+  \item 4 Grundsätze für Komponentenschnittstellen
+  \begin{itemize}
+    \item Identifizierung von Ressourcen
+    \item Manipulation von Ressourcen durch ihre Repräsentation
+    \item Selbsterklärende Nachrichten
+    \item `hypermedia as the engine of application state'
+  \end{itemize}
+  \item Die Daten werden zum Ort der Verarbeitung geschickt, nicht die Anweisungen zu den Daten.
+  \item Komponenten in REST Architektur sehen nur Komponenten, mit denen sie direkt interagieren (Schichten). Begrenztes Wissen verringert Komplexität. Schichten ermöglichen Kapselung. Zwischenkomponenten (Proxies) können Daten transformieren (wie Pipes/Filter)
+  \item Schichtenarchitektur bedeutet mehr Datenverarbeitung und Latenz
+  \item Client kann Repräsentation der Daten wählen. Ursprung der Daten hinter Serverinterface versteckt
+  \item Ressourcen ist Abstraktion für jede Art Information (Dokumente, Bilder, Sammlung anderer Ressourcen)
+  \item Ressource wird durch Identifier (Bezeichner) bekannt gemacht und abrufbar. Bezeichner ändert sich nicht, wenn sich die Ressource ändert. Mehrere Ressourcen können die gleichen Informationen beinhalten.
+  \item 
+\end{itemize}
