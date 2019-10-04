@@ -49,5 +49,15 @@
   \item Client kann Repräsentation der Daten wählen. Ursprung der Daten hinter Serverinterface versteckt
   \item Ressourcen ist Abstraktion für jede Art Information (Dokumente, Bilder, Sammlung anderer Ressourcen)
   \item Ressource wird durch Identifier (Bezeichner) bekannt gemacht und abrufbar. Bezeichner ändert sich nicht, wenn sich die Ressource ändert. Mehrere Ressourcen können die gleichen Informationen beinhalten.
-  \item 
+  \item Repräsentation einer Ressource (Antwort des Servers) besteht aus Daten und Metadaten
+  \item Kontrolldaten übermitteln den Zweck der Nachricht oder zum Umgang mit der Nachricht (HTTP Methoden, Status codes, Header)
+  \item REST kennt drei Komponententypen:
+  \begin{itemize}
+    \item user agent: Web Browser, Benutzeranwendung, letztendlicher Empfänger der Antwort
+    \item origin server: endgültige Quelle der Repräsentation der Ressource, letztendlicher Empfänger von Requests, die Modifikationen vornehmen; bietet Schnittstelle als Hierarchie von Ressourcen
+    \item intermediary: agiert sowohl als Client, als auch als Server; leitet Requests und Responses weiter bzw.\ modifiziert sie; Gateway oder Proxy;
+  \end{itemize}
+  \item Leichtes Einführen von Zwischenkomponenten möglich durch selbstbeschreibende Nachrichten, generische Client- und Server-Schnittstellen und zustandslose Kommunikation. Keine einzige Komponente braucht Überblick über ganzes System.
+  \item REST ermöglicht Verbindung zu anderen nicht-REST Systemen, indem diese eine REST-konforme Schnittstelle bereitstellen.
+  \item Abbildung REST connectors and components
 \end{itemize}
