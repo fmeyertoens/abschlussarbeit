@@ -1,0 +1,17 @@
+\section{Vorbetrachtungen}
+\subsection{Client-Server Architektur}
+\begin{itemize}
+  \item Client-Server ist ein verteiltes System
+  \item Zwischen Client und Server geschieht Nachrichtenaustausch
+  \item Client fordert eine Operation vom Server an. Server sendet Resultat der Operation an den Client zurück.
+  \item Client initiiert die Interaktion. Server reagiert.
+  \item Mehrere Clients können den gleichen Server nutzen. Abbildung aus `Grundkurs verteilte Systeme'!
+  \item Client kann mehrere Server benutzen. Server kann in anderer Interaktion selbst zum Client/Vermittler werden.
+  \item Vorteile
+    \begin{itemize}
+      \item getrennte Entwicklung
+      \item unabhängige Ausfälle
+      \item Festgelegte Rollenverteilung: Client ist Konsument. Server ist Produzent.
+    \end{itemize}
+  \item Herausforderung: einheitliches Kommunikationsprotokoll
+\end{itemize}
