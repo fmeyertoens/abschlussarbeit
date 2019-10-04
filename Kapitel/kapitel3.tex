@@ -48,6 +48,7 @@
   \item Schichtenarchitektur bedeutet mehr Datenverarbeitung und Latenz
   \item Client kann Repräsentation der Daten wählen. Ursprung der Daten hinter Serverinterface versteckt
   \item Ressourcen ist Abstraktion für jede Art Information (Dokumente, Bilder, Sammlung anderer Ressourcen)
+  \item Jede Webseite ist Ressource
   \item Ressource wird durch Identifier (Bezeichner) bekannt gemacht und abrufbar. Bezeichner ändert sich nicht, wenn sich die Ressource ändert. Mehrere Ressourcen können die gleichen Informationen beinhalten.
   \item Repräsentation einer Ressource (Antwort des Servers) besteht aus Daten und Metadaten
   \item Kontrolldaten übermitteln den Zweck der Nachricht oder zum Umgang mit der Nachricht (HTTP Methoden, Status codes, Header)
@@ -60,4 +61,41 @@
   \item Leichtes Einführen von Zwischenkomponenten möglich durch selbstbeschreibende Nachrichten, generische Client- und Server-Schnittstellen und zustandslose Kommunikation. Keine einzige Komponente braucht Überblick über ganzes System.
   \item REST ermöglicht Verbindung zu anderen nicht-REST Systemen, indem diese eine REST-konforme Schnittstelle bereitstellen.
   \item Abbildung REST connectors and components
+\end{itemize}
+
+\subsection{Implementierung von RESTful APIs}
+\begin{itemize}
+  \item APIs die sich an REST halten werden RESTful genannt
+  \item Richardson Maturity Model ermöglicht Bestimmung wie REST konform Web service (API) ist
+  \item Level 0
+  \item Level 1
+  URI
+  \item Level 2
+  \begin{itemize}
+    \item HTTP Methoden genutzt als Kontrolldaten um Intention auszudrücken
+    \item CRUD Operationen werden abgedeckt
+    \item GET:\ Anfragen einer Repräsentation der Ressource, idempotent
+    \item POST:\ kann zum Erstellen, Modifizieren und Löschen von Ressourcen verwendet werden, schlecht definiert; Funktionsweise in folgende Methoden aufgeteilt
+    \item PUT:\ Erstellen/Ersetzen einer Repräsentation
+    \item PATCH:\ Modifizieren einer Repräsentation
+    \item DELETE:\ Löschen der Ressource
+  \end{itemize}
+  \item Level 3
+  \begin{itemize}
+    \item Hypermedia ermöglicht Navigation durch die API\@. Client ändert seinen Zustand, indem er URIs (Links) folgt (HATEOAS)
+    \item keine externe Dokumentation nötig. Links zwischen Dokumenten dokumentieren die Ressourcen
+    \item Datenformat ist entscheidend. Bestimmte Formate haben native Unterstützung für Links und Forms (HTML, ATOM)
+    \item Media Type bestimmt Auswertung (und Anzeige) der Antwort. JSON, XML können genutzt werden. Client benötigt Informationen, um Links in diesen Dokumenten auszuwerten.
+  \end{itemize}
+\end{itemize}
+
+\subsection{Verbreitung und Standardisierung}
+\begin{itemize}
+  \item REST bestimmt nicht welches Format benutzt werden muss.
+  \item Kein REST Standard
+  \item XML und HTML zur direkten Anzeige geeignet. JSON beliebter geworden, das leichter für Menschen und Maschinen zu lesen
+  \item verschiedene Ansätze um Struktur von JSON Dokumenten zur Verwendung in APIs zu definieren. Teilweise miteinander verwendbar (definieren verschiedene Aspekte der Kommunikation)
+  \item OpenAPI
+  \item JSON:API
+  \item Abbildung Beispiel Request und Response
 \end{itemize}

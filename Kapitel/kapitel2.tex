@@ -22,12 +22,12 @@
   \item Grundsatz ist die Kommunikation zweier Programme zur Konsumierung von anderem Quellcode, Abstraktion und Verstecken von Implementierungsdetails und Komplexität.
   \item Frameworks und Bibliotheken vieler Programmiersprachen bieten oft benötigte Funktionalität. Kommunikation besteht aus Aufruf mit Parametern und Antwort mit Ergebnis.
   \item Die Arbeit beschäftigt sich nur mit API von verteilten Systemen.
-  \item Hauptaugenmerk auf Systemen mit Fat-Client. Großer Teil der Anwendungslogik auf Clientseite. Server dient als Datenspeicher.
+  \item Hauptaugenmerk auf Systemen mit Fat-Client. Großer Teil der Anwendungslogik auf Clientseite. Server dient als Datenspeicher. Hauptinteraktionen mit CRUD (Create, Read, Update, Delete)
   \item Popularität von Cloudservices und öffentlichen APIs bzw. Interaktion mit externen Services
 \end{itemize}
 
 \subsection{Abgrenzung zu anderen Web API Ansätzen}
 \begin{itemize}
-  \item SOAP (Simple Object Access Protocol), XML basiert
+  \item SOAP (Simple Object Access Protocol), XML basiert, nutzt nur POST
   \item RPC (Remote Procedure Call), Zentraler Punkt ist das Aufrufen von Anwendungslogik auf dem Server, nicht Datentransport.
 \end{itemize}
