@@ -65,7 +65,7 @@
 
 \subsection{Implementierung von RESTful APIs}
 \begin{itemize}
-  \item APIs die sich an REST halten werden RESTful genannt
+  \item APIs die dem REST Archtekturstil folgen werden RESTful genannt
   \item Richardson Maturity Model ermöglicht Bestimmung wie REST konform Web service (API) ist
   \item Level 0
   \item Level 1
@@ -74,18 +74,19 @@
   \begin{itemize}
     \item HTTP Methoden genutzt als Kontrolldaten um Intention auszudrücken
     \item CRUD Operationen werden abgedeckt
-    \item GET:\ Anfragen einer Repräsentation der Ressource, idempotent
+    \item GET:\ Anfragen einer Repräsentation der Ressource
     \item POST:\ kann zum Erstellen, Modifizieren und Löschen von Ressourcen verwendet werden, schlecht definiert; Funktionsweise in folgende Methoden aufgeteilt
     \item PUT:\ Erstellen/Ersetzen einer Repräsentation
     \item PATCH:\ Modifizieren einer Repräsentation
     \item DELETE:\ Löschen der Ressource
+    \item GET, PUT, DELETE sind idempotent (gleiches Ergebnis bei mehrmaliger Ausführung). GET ist safe (kein Verändern der Ressource).
   \end{itemize}
   \item Level 3
   \begin{itemize}
     \item Hypermedia ermöglicht Navigation durch die API\@. Client ändert seinen Zustand, indem er URIs (Links) folgt (HATEOAS)
     \item keine externe Dokumentation nötig. Links zwischen Dokumenten dokumentieren die Ressourcen
     \item Datenformat ist entscheidend. Bestimmte Formate haben native Unterstützung für Links und Forms (HTML, ATOM)
-    \item Media Type bestimmt Auswertung (und Anzeige) der Antwort. JSON, XML können genutzt werden. Client benötigt Informationen, um Links in diesen Dokumenten auszuwerten.
+    \item Media Type bestimmt Auswertung (und Anzeige) der Antwort. JSON, XML können genutzt werden. Client benötigt Informationen über Datenstruktur, um Links in diesen Dokumenten auszuwerten.
   \end{itemize}
 \end{itemize}
 

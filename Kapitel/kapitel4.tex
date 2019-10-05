@@ -1,7 +1,50 @@
 \section{GraphQL}
 
-\subsection{Entwicklung}
+\subsection{Entwicklung und Grundgedanke}
+\begin{itemize}
+  \item GraphQL ist Abfragesprache für APIs und Laufzeitumgebung um auf Abfragen zu antworten
+  \item Server stellt Schema = komplette Beschreibung der Datenstruktur
+  \item Client sendet beliebige Abfrage und erhält exakt die angefragten Daten
+  \item Eine Anfrage für alle nötigen Daten (für eine View); Vorteil bei langsamen mobilen Netzwerken
+  \item 2012 von Facebook entwickelt und eingesetzt
+  \item 2015 open source, GraphQL Foundation, Spec auf Github weiterentwickelt, Juni 2018 letzter Release
+  \item Besteht aus Typsystem, Abfragesprache, Ausführungssemantik, statischer Validierung und Typintrospektion
+\end{itemize}
 
 \subsection{Spezifikation und Funktionsweise}
+\begin{itemize}
+  \item Typsystem
+  \begin{itemize}
+    \item Typsystem und GraphQL Schema drücken aus, welche Objekte die API zu Verfügung stellt
+    \item Schema besteht aus `type', `enum' und `interface'. `type' kann `interface' implementieren
+    \item jeder Type (und Interface) ist Ansammlung von Feldern
+    \item `null' ist erlaubter Wert. Non-nullable Feld wird mit `!' markiert
+    \item Einstiegspunkt (Top level) in Typsystem ist Objekttyp, Name nach Konvention `query'
+    \item Felder auf query Typ sind mögliche Operationen; Argumente möglich
+  \end{itemize}
+  \item Query Syntax
+  \begin{itemize}
+    \item Abbildung Beispiel Query
+    \item GraphQL Abfrage beschreibt deklarativ welche Daten erwartet werden
+    \item Antwort ist JSON mit der gleichen Struktur
+    \item Abfragen können geschachtelt werden
+    \item Fragmente
+    \begin{itemize}
+      \item Abbildung Beispiel Fragment
+      \item verhindert Dopplung von mehreren Feldern in Abfrage
+      \item ermöglicht typbasierte Feldselektion
+    \end{itemize}
+  \end{itemize}
+  \item Introspektion
+  \begin{itemize}
+    \item Spezialfelder beginnend mit doppelt Unterstrich
+    \item \_\_schema, \_\_typename
+    \item Metadaten über GraphQL Schemaß
+    \item Sinn ist Nutzung durch Entwicklungstools
+    \item ermöglicht statische Validierung: GraphQL Abfrage kann zu Entwicklungszeit geprüft werden
+  \end{itemize}
+  \item Referenzen werden unsichtbar, da von GraphQL Server automatisch aufgelöst (Performance beachten!)
+  \item 
+\end{itemize}
 
 \subsection{Server-Execution}
