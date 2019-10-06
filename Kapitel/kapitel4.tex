@@ -5,7 +5,7 @@
   \item GraphQL ist Abfragesprache für APIs und Laufzeitumgebung um auf Abfragen zu antworten
   \item Server stellt Schema = komplette Beschreibung der Datenstruktur
   \item Client sendet beliebige Abfrage und erhält exakt die angefragten Daten
-  \item Eine Anfrage für alle nötigen Daten (für eine View); Vorteil bei langsamen mobilen Netzwerken
+  \item Eine Anfrage für alle nötigen Daten (für eine View, UI basiert); Vorteil bei langsamen mobilen Netzwerken
   \item 2012 von Facebook entwickelt und eingesetzt
   \item 2015 open source, GraphQL Foundation, Spec auf Github weiterentwickelt, Juni 2018 letzter Release
   \item Besteht aus Typsystem, Abfragesprache, Ausführungssemantik, statischer Validierung und Typintrospektion
@@ -44,7 +44,9 @@
     \item ermöglicht statische Validierung: GraphQL Abfrage kann zu Entwicklungszeit geprüft werden
   \end{itemize}
   \item Referenzen werden unsichtbar, da von GraphQL Server automatisch aufgelöst (Performance beachten!)
-  \item 
+  \item ein Endpunkt (kein Nutzen von URIs)
+  \item jede Abfrage mit POST (kein Nutzen von HTTP Methoden)
+  \item Semantik der Abfrage von Server ausgewertet (welche der CRUD Operationen)
 \end{itemize}
 
 \subsection{Server-Execution}

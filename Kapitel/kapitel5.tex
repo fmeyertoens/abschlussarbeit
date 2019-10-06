@@ -5,13 +5,85 @@
   \item GraphQL
   \begin{itemize}
     \item neue Felder hinzufügen ohne existierende Queries zu beeinflussen
+    \item neue Felder nicht automatisch gesendet
     \item Felder als deprecated markieren → Tool kann Entwickler warnen
+    \item Monitoring auf Feldlevel möglich
+  \end{itemize}
+  \item REST
+  \begin{itemize}
+    \item Monitoring: werden sparse fieldsets oder includes verwendet können genutzte Felder aufgezeichnet werden
+    \item neue Version, neuer Endpunkt example.com/v2/contacts/\dots
+    \item für kleine Veränderungen ungeeignet
   \end{itemize}
 \end{itemize}
 
+\subsection{Datenaufkommen/Netzwerklast}
+\begin{itemize}
+  \item Transfer, Verarbeiten und Speichern unnötiger Daten (Felder) sollte vermieden werden
+  \item GraphQL
+  \begin{itemize}
+    \item automatisch kleinstmöglicher Request
+    \item Query muss an Server gesendet werden
+  \end{itemize}
+  \item REST
+  \begin{itemize}
+    \item standardmäßig gesamte Repräsentation
+    \item viele APIs bieten Feldselektion an (Partials)
+    \item query string enthält Feldselektion nach bestimmter Syntax
+    \item je komplexer, desto mehr Daten
+    \item jede Ressource ist extra Endpunkt
+    \item für mehrere Ressourcen müssen mehrere Requests gemacht werden, n+1 Problem
+    \item includes beziehen verbundene Daten in Response ein → ein Request für mehrere Ressourcen
+  \end{itemize}
+  \item GraphQL und REST Partials unterscheiden Objekt und Array nicht → Wissen über API notwendig um Performance einzuschätzen
+  \item mehr Daten um Request genauer zu machen, sinnvoll um deutlich weniger Daten als Response zu erhalten
+\end{itemize}
+
 \subsection{Caching}
+\begin{itemize}
+  \item Flexibilität gegen Caching: je spezieller die Abfrage, desto schwieriger (weniger sinnvoll) caching
+  \item nicht Antwort direkt cachen (HTTP), sondern manuell Objekte anhand ID cachen (JavaScript)
+  \item REST
+  \begin{itemize}
+    \item Browser HTTP caching automatisch genutzt
+    \item Caching basierend auf Endpunkt
+    \item URL ist cache ID für die Ressource
+    \item ermöglicht HTTP cache proxies
+    \item je spezieller der query string, desto weniger cache Treffer
+  \end{itemize}
+  \item GraphQL
+  \begin{itemize}
+    \item POST response wird normalerweise nicht gecacht
+    \item standardmäßig keine ID für caching vorhanden. Empfehlung: API sollte ID pro Objekt bereitstellen
+  \end{itemize}
+\end{itemize}
 
 \subsection{Abfrageflexibilität}
+\begin{itemize}
+  \item GraphQL
+  \begin{itemize}
+    \item keine Wildcards (alle Felder eines Objekts)
+    \item als Abfragesprache gedacht
+    \item unterscheidet Feldselektion, Sortieren, Filtern, Optionen
+    \item keine Syntax für Sortieren/Filtern, aber Möglichkeit über Feldargumente
+    \item Bsp: height (unit:FOOT)
+    \item sehr anpassbar für verschiedene Apps bzw. öffentliche API (Anforderungen unbekannt)
+    \item include ist quasi Pflicht, effizient und konsistent
+    \item an Query sind Performanceprobleme evtl.\ schwer erkennbar (siehe Tools)
+  \end{itemize}
+  \item REST
+  \begin{itemize}
+    \item oft einfacher Anfang. Mit steigender Komplexität werden Abfragesprachen typische Konstrukte eingebaut
+    \item fields=`` '' für Feldselektion
+    \item field=`` '' zum Filtern
+    \item sort=[field],sort-dir=desc zum Sortieren
+    \item option=`` '' für Optionen
+    \item includes empfohlen bei JSON:API, aufbrechen von HATEOAS\@?
+    \item includes oder extra Endpunkt ist Entwurfsentscheidung
+    \item Anforderungen für Client App können spezifisch werden, extra API pro Client
+  \end{itemize}
+  \item Upload ist schwierig für GraphQL (serialization), REST kann multipart/form-data header nutzen
+\end{itemize}
 
 \subsection{Batching/Deduping}
 
@@ -24,3 +96,12 @@
 \subsection{Lernkurve, Fehlersuche, Community}
 
 \subsection{Bibliotheken und Tools}
+\begin{itemize}
+  \item GraphQL
+  \begin{itemize}
+    \item offizielle Spezifikation vorhanden
+    \item Referenzimplementierung in JavaScript
+    \item Zusatztools von Facebook (Dataloader, Relay)
+    \item Tool kann Abfragekomplexität zu Entwicklungszeit ermitteln (mit vergangenen Messwerten)
+  \end{itemize}
+\end{itemize}
