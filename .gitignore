@@ -5,6 +5,7 @@
 *.fls
 *.log
 *.toc
+*.out
 
 # directories
 .vscode/

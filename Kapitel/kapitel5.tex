@@ -1,5 +1,62 @@
 \section{Vergleich}
 
+\subsection{Abfrageflexibilität}
+\begin{itemize}
+  \item nicht nur Abfrage (GET) sondern auch Änderungsoperationen (POST,\dots)
+  \item GraphQL
+  \begin{itemize}
+    \item keine Wildcards (alle Felder eines Objekts)
+    \item als Abfragesprache gedacht
+    \item unterscheidet Feldselektion, Sortieren, Filtern, Optionen
+    \item keine Syntax für Sortieren/Filtern, aber Möglichkeit über Feldargumente
+    \item Bsp: height (unit:FOOT)
+    \item sehr anpassbar für verschiedene Apps bzw. öffentliche API (Anforderungen unbekannt)
+    \item include ist quasi Pflicht, effizient und konsistent
+    \item an Query sind Performanceprobleme evtl.\ schwer erkennbar (siehe Tools)
+  \end{itemize}
+  \item REST
+  \begin{itemize}
+    \item oft einfacher Anfang. Mit steigender Komplexität werden Abfragesprachen typische Konstrukte eingebaut
+    \item fields=`` '' für Feldselektion
+    \item field=`` '' zum Filtern
+    \item sort=[field],sort-dir=desc zum Sortieren
+    \item option=`` '' für Optionen
+    \item includes empfohlen bei JSON:API, aufbrechen von HATEOAS\@?
+    \item includes oder extra Endpunkt ist Entwurfsentscheidung
+    \item Anforderungen für Client App können spezifisch werden, extra API pro Client
+  \end{itemize}
+  \item Upload ist schwierig für GraphQL (serialization), REST kann multipart/form-data header nutzen
+\end{itemize}
+Bei der Entwicklung von Client-Anwendungen ist die Flexibilität der genutzten API ein entscheidender Einflussfaktor.
+Dabei steht besonders die Flexibilität für das Generieren von Abfragen im Vordergrund, aber auch von Operationen zum Modifizieren von Ressourcen.\par
+
+GraphQL wurde als Abfragesprache entwickelt.
+Eines der Entwicklungsziele ist es, dass eine Clientanwendung mit einer einzigen Abfrage alle für eine Ansicht nötigen Daten erhalten kann.
+Der Server gewährt Zugriff auf das Datenschema, welches alle verfügbaren Daten und deren Relationen darstellt, sowie die Einstiegspunkte (Root Query), auf deren Basis ein Client seine Anfrage aufbauen kann.
+Das Schema stellt den Rahmen für alle Abfragen dar.
+Alle Daten, die der Server zur Verfügung stellt, werden durch Typen und deren Felder repräsentiert.
+Jedes Feld, welches eine Clientanwendung erhalten möchte, muss in der Query angegeben werden.
+Es existiert keine Möglichkeit alle Felder eines Typs zu erhalten ohne jedes davon anzugeben.
+Der Client ist damit eng an das Schema gekoppelt, erhält aber auch nur die Daten, die tatsächlich angefragt wurden.
+Die Möglichkeit eines GraphQL-Servers beliebige Abfragen innerhalb des Schemas auszuwerten eignet sich besonders für öffentliche APIs, bei denen dem API-Entwickler die individuellen Anforderungen und damit die Abfragen verschiedenster Anwendungen, im Voraus nicht bekannt sind.
+Der Server kann für jedes Feld Parameter anbieten, welche die Auswertung des Feldwertes verändern. Über solche Feldargumente kann Geschäftslogik, aber auch allgemeine Abfragefunktionen, wie \zB{} Sortieren und Filtern zur Verfügung gestellt werden.\par
+
+In einer REST API ist jede Ressource über einen separaten Endpunkt erreichbar.
+Die Antwort auf einen GET Request an einen Endpunkt enthält alle Felder der Ressource bzw.\ die komplette Repräsentation.
+In Beziehung stehende Daten, die nicht Teil einer Ressource sind, müssen über mehrere Requests vom Server angefragt werden.
+Der Grundgedanke von HATEOAS ist, dass diese verbundenen Ressourcen Verweise aufeinander enthalten, wodurch ihre Beziehung dargestellt wird.
+Das Zusammenbauen von Requests anhand der Links in erhaltenen Ressourcen ermöglicht große Flexibilität, erfordert jedoch dass Daten erst ausgewertet werden müssen und danach erst neue Anfragen abgesetzt werden können.
+Dadurch ist das Datenmodell nicht durch ein Schema vorgegeben, sondern kann zur Laufzeit geändert und explorativ genutzt werden.
+Oftmals ist bei der Entwicklung von Clientanwendungen die erforderliche Datenstruktur jedoch bekannt und ist es wünschenswert möglichst alle benötigten Informationen von wenigen Endpunkten zu erhalten, um die Performance zu steigern.
+Dazu gibt es verschiedene Ansätze, wie der Query-String einer URI genutzt werden kann, um in Beziehung stehende Daten mit einem einzigen Request von einem Endpunkt zu erhalten.
+Weder REST noch HTTP spezifizieren Syntax und Semantik des Query Strings bzw.\ betrachten diese als Implementierungsdetail. 
+Query-Parameter und Matrixparameter werden gebraucht, um die Möglichkeiten von Abfragesprachen für REST zu implementieren.
+Sie ermöglichen \zB{} die gewünschten Felder des angefragten Objektes, ein Feld nach dem sortiert, oder ein Feld und Wert nach dem gefiltert werden soll, anzugeben.
+Über sogenannte `includes' lassen sich bei JSON:API verbundene Objekte in die Antwort einbeziehen.
+Diese speziellen Auswertungen des Query-Strings müssen durch den REST Server angeboten werden und sind aus Entwurfssicht ein Tausch von erhöhter Abfragekomplexität und Clientflexibilität gegen Serverperformance.
+Ein Endpunkt kann alle Methoden zum Abfragen und Ändern einer Ressource bereitstellen und durch die HTTP Verben semantisch unterscheiden.
+Das veröffentlichen einer neuen Ressource geschieht durch das Einführen eines neuen Endpunktes.
+
 \subsection{Versionierung und Weiterentwicklung}
 \begin{itemize}
   \item GraphQL
@@ -56,33 +113,6 @@
     \item POST response wird normalerweise nicht gecacht
     \item standardmäßig keine ID für caching vorhanden. Empfehlung: API sollte ID pro Objekt bereitstellen
   \end{itemize}
-\end{itemize}
-
-\subsection{Abfrageflexibilität}
-\begin{itemize}
-  \item GraphQL
-  \begin{itemize}
-    \item keine Wildcards (alle Felder eines Objekts)
-    \item als Abfragesprache gedacht
-    \item unterscheidet Feldselektion, Sortieren, Filtern, Optionen
-    \item keine Syntax für Sortieren/Filtern, aber Möglichkeit über Feldargumente
-    \item Bsp: height (unit:FOOT)
-    \item sehr anpassbar für verschiedene Apps bzw. öffentliche API (Anforderungen unbekannt)
-    \item include ist quasi Pflicht, effizient und konsistent
-    \item an Query sind Performanceprobleme evtl.\ schwer erkennbar (siehe Tools)
-  \end{itemize}
-  \item REST
-  \begin{itemize}
-    \item oft einfacher Anfang. Mit steigender Komplexität werden Abfragesprachen typische Konstrukte eingebaut
-    \item fields=`` '' für Feldselektion
-    \item field=`` '' zum Filtern
-    \item sort=[field],sort-dir=desc zum Sortieren
-    \item option=`` '' für Optionen
-    \item includes empfohlen bei JSON:API, aufbrechen von HATEOAS\@?
-    \item includes oder extra Endpunkt ist Entwurfsentscheidung
-    \item Anforderungen für Client App können spezifisch werden, extra API pro Client
-  \end{itemize}
-  \item Upload ist schwierig für GraphQL (serialization), REST kann multipart/form-data header nutzen
 \end{itemize}
 
 \subsection{Batching/Deduping}
