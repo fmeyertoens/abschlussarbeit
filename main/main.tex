@@ -1,4 +1,4 @@
-\documentclass[a4paper, 11pt]{article}
+\documentclass[fontsize=11pt,paper=a4,toc=listof]{scrbook}
 
 % deutsche Umlaute
 % \usepackage{lmodern}
@@ -20,22 +20,18 @@
 \author{Fabian Meyertöns}
 
 \begin{document}
+\frontmatter
 \input{../Kapitel/Deckblatt.tex}
 
-\tableofcontents
-\newpage
+\tableofcontents \listoffigures \listoftables
 
+\mainmatter
 \input{../Kapitel/kapitel1.tex}
-\newpage
 \input{../Kapitel/kapitel2.tex}
-\newpage
 \input{../Kapitel/kapitel3.tex}
-\newpage
 \input{../Kapitel/kapitel4.tex}
-\newpage
 \input{../Kapitel/kapitel5.tex}
-\newpage
 \input{../Kapitel/kapitel6.tex}
-\newpage
 \input{../Kapitel/kapitel7.tex}
+
 \end{document}

@@ -1,6 +1,6 @@
-\section{Vergleich}
+\chapter{Vergleich}
 
-\subsection{Abfrageflexibilität}
+\section{Abfrageflexibilität}
 \begin{itemize}
   \item nicht nur Abfrage (GET) sondern auch Änderungsoperationen (POST,\dots)
   \item GraphQL
@@ -39,25 +39,32 @@ Jedes Feld, welches eine Clientanwendung erhalten möchte, muss in der Query ang
 Es existiert keine Möglichkeit alle Felder eines Typs zu erhalten ohne jedes davon anzugeben.
 Der Client ist damit eng an das Schema gekoppelt, erhält aber auch nur die Daten, die tatsächlich angefragt wurden.
 Die Möglichkeit eines GraphQL-Servers beliebige Abfragen innerhalb des Schemas auszuwerten eignet sich besonders für öffentliche APIs, bei denen dem API-Entwickler die individuellen Anforderungen und damit die Abfragen verschiedenster Anwendungen, im Voraus nicht bekannt sind.
-Der Server kann für jedes Feld Parameter anbieten, welche die Auswertung des Feldwertes verändern. Über solche Feldargumente kann Geschäftslogik, aber auch allgemeine Abfragefunktionen, wie \zB{} Sortieren und Filtern zur Verfügung gestellt werden.\par
+Die Relationen zwischen den Datentypen werden durch das Schema festgelegt.
+Eine Anfrage kann jedoch beliebig viele, unabhängige Queries beinhalten, \zB{} um verschiedene Daten zu erhalten, die in keiner Beziehung zueinander stehen oder deren Beziehung durch das Schema nicht dargestellt wird.
+Der Server kann für jedes Feld Parameter anbieten, welche die Auswertung des Feldwertes verändern. Über solche Feldargumente können Optionen, die Geschäftslogik darstellen, aber auch allgemeine Abfragefunktionen, wie \zB{} Sortieren und Filtern zur Verfügung gestellt werden.\par
+Während das Anfragen von Daten sehr viel Flexibilität für Clients bietet, ist das Modifizieren von Ressourcen nach Konvention nur über einzelne Mutations möglich.
+Üblicherweise wird für jede Operation (Erstellen, Verändern und Löschen) einer Ressource eine separate Mutation zur Verfügung gestellt, welche durch den Namen eindeutig identifiziert wird.
+Die Antwort auf eine Mutation kann wieder ein Objekt sein und genutzt werden um das Resultat der Operation zu übermitteln oder den neuen Stand der Ressource abzufragen.
+\par
 
 In einer REST API ist jede Ressource über einen separaten Endpunkt erreichbar.
 Die Antwort auf einen GET Request an einen Endpunkt enthält alle Felder der Ressource bzw.\ die komplette Repräsentation.
 In Beziehung stehende Daten, die nicht Teil einer Ressource sind, müssen über mehrere Requests vom Server angefragt werden.
 Der Grundgedanke von HATEOAS ist, dass diese verbundenen Ressourcen Verweise aufeinander enthalten, wodurch ihre Beziehung dargestellt wird.
 Das Zusammenbauen von Requests anhand der Links in erhaltenen Ressourcen ermöglicht große Flexibilität, erfordert jedoch dass Daten erst ausgewertet werden müssen und danach erst neue Anfragen abgesetzt werden können.
-Dadurch ist das Datenmodell nicht durch ein Schema vorgegeben, sondern kann zur Laufzeit geändert und explorativ genutzt werden.
+Dadurch ist das Datenmodell nicht durch ein Schema vorgegeben, sondern kann zur Laufzeit geändert und explorativ genutzt werden, da es selbstdokumentierend ist.
 Oftmals ist bei der Entwicklung von Clientanwendungen die erforderliche Datenstruktur jedoch bekannt und ist es wünschenswert möglichst alle benötigten Informationen von wenigen Endpunkten zu erhalten, um die Performance zu steigern.
 Dazu gibt es verschiedene Ansätze, wie der Query-String einer URI genutzt werden kann, um in Beziehung stehende Daten mit einem einzigen Request von einem Endpunkt zu erhalten.
 Weder REST noch HTTP spezifizieren Syntax und Semantik des Query Strings bzw.\ betrachten diese als Implementierungsdetail. 
 Query-Parameter und Matrixparameter werden gebraucht, um die Möglichkeiten von Abfragesprachen für REST zu implementieren.
 Sie ermöglichen \zB{} die gewünschten Felder des angefragten Objektes, ein Feld nach dem sortiert, oder ein Feld und Wert nach dem gefiltert werden soll, anzugeben.
-Über sogenannte `includes' lassen sich bei JSON:API verbundene Objekte in die Antwort einbeziehen.
+Über sogenannte \enquote{includes} lassen sich bei JSON:API verbundene Objekte in die Antwort einbeziehen.
+Includes oder sind außerdem eine effektive Lösung für das N+1 Problem.
 Diese speziellen Auswertungen des Query-Strings müssen durch den REST Server angeboten werden und sind aus Entwurfssicht ein Tausch von erhöhter Abfragekomplexität und Clientflexibilität gegen Serverperformance.
 Ein Endpunkt kann alle Methoden zum Abfragen und Ändern einer Ressource bereitstellen und durch die HTTP Verben semantisch unterscheiden.
-Das veröffentlichen einer neuen Ressource geschieht durch das Einführen eines neuen Endpunktes.
+Das Veröffentlichen einer neuen Ressource geschieht durch das Einführen eines neuen Endpunktes.
 
-\subsection{Versionierung und Weiterentwicklung}
+\section{Versionierung und Weiterentwicklung}
 \begin{itemize}
   \item GraphQL
   \begin{itemize}
@@ -74,7 +81,7 @@ Das veröffentlichen einer neuen Ressource geschieht durch das Einführen eines 
   \end{itemize}
 \end{itemize}
 
-\subsection{Datenaufkommen/Netzwerklast}
+\section{Datenaufkommen/Netzwerklast}
 \begin{itemize}
   \item Transfer, Verarbeiten und Speichern unnötiger Daten (Felder) sollte vermieden werden
   \item GraphQL
@@ -96,7 +103,7 @@ Das veröffentlichen einer neuen Ressource geschieht durch das Einführen eines 
   \item mehr Daten um Request genauer zu machen, sinnvoll um deutlich weniger Daten als Response zu erhalten
 \end{itemize}
 
-\subsection{Caching}
+\section{Caching}
 \begin{itemize}
   \item Flexibilität gegen Caching: je spezieller die Abfrage, desto schwieriger (weniger sinnvoll) caching
   \item nicht Antwort direkt cachen (HTTP), sondern manuell Objekte anhand ID cachen (JavaScript)
@@ -115,17 +122,20 @@ Das veröffentlichen einer neuen Ressource geschieht durch das Einführen eines 
   \end{itemize}
 \end{itemize}
 
-\subsection{Batching/Deduping}
+\section{Batching/Deduping}
+\begin{itemize}
+  \item GraphQL queries können parallel ausgewertet werden, Mutations nicht
+\end{itemize}
 
-\subsection{Fehlerbehandlung}
+\section{Fehlerbehandlung}
 
-\subsection{Sicherheit}
+\section{Sicherheit}
 
-\subsection{Kosten}
+\section{Kosten}
 
-\subsection{Lernkurve, Fehlersuche, Community}
+\section{Lernkurve, Fehlersuche, Community}
 
-\subsection{Bibliotheken und Tools}
+\section{Bibliotheken und Tools}
 \begin{itemize}
   \item GraphQL
   \begin{itemize}
