@@ -64,7 +64,7 @@ Diese speziellen Auswertungen des Query-Strings müssen durch den REST Server an
 Ein Endpunkt kann alle Methoden zum Abfragen und Ändern einer Ressource bereitstellen und durch die HTTP Verben semantisch unterscheiden.
 Das Veröffentlichen einer neuen Ressource geschieht durch das Einführen eines neuen Endpunktes.
 
-\section{Versionierung und Weiterentwicklung}
+\section{Weiterentwicklung und Versionierung}
 \begin{itemize}
   \item GraphQL
   \begin{itemize}
@@ -78,8 +78,60 @@ Das Veröffentlichen einer neuen Ressource geschieht durch das Einführen eines 
     \item Monitoring: werden sparse fieldsets oder includes verwendet können genutzte Felder aufgezeichnet werden
     \item neue Version, neuer Endpunkt example.com/v2/contacts/\dots
     \item für kleine Veränderungen ungeeignet
+    \item Hinzufügen von Ressourcen → keine Versionierung notwendig
+    \item Semantische Versionierung
+    \item Postelsches Gesetz
+    \item Hinzufügen/Umordnen von einzelnen Elementen sollte Client akzeptieren
+    \item Versionierung über Accept-Header, URI oder query string
   \end{itemize}
 \end{itemize}
+\par 
+Langlebige Software befindet sich in ständiger Entwicklung.
+Ein Server muss auf Veränderungen des der API zugrunde liegenden Datenmodells reagieren können und diese gegebenenfalls Clients zugänglich machen.
+Neue Anforderungen an die API erfordern das Erweitern der Abfragemöglichkeiten, oder das Verringern derselben, wenn alte Funktionalität nicht mehr unterstützt oder durch neue ersetzt werden soll.
+Da jede API einen Vertrag zwischen Server und Client darstellt, sollten Veränderungen einem festgelegten Ablauf und Kommunikationskanal folgen, um sukzessive Migration zu gewährleisten und Abfragefehler zu vermeiden.
+Zu diesem Zweck wird in der Softwareentwicklung häufig Versionierung verwendet, bei der durch eine Zahl oder Zahlenkombination ein bestimmter Stand der Software bereitgestellt oder abgefragt wird.
+\par
+Um eine REST API um zusätzliche Ressourcen zu erweitern, ist keine Versionierung notwendig.
+Stattdessen wird ein neuer Endpunkt hinzugefügt und über die Verlinkung von anderen Ressourcen, oder als Einstiegspunkt in der Dokumentation bekanntgemacht.
+Eine API Clientanwendung sollte so entwickelt werden, dass eine Antwort ausgewertet werden kann, solange sie semantisch eindeutig verständlich ist (Postel'sches Gesetz).
+Das Umordnen und Hinzufügen von Elementen innerhalb einer Antwort sollte somit nicht zu Fehlern führen und die Validierung demgegenüber tolerant sein.
+Normalerweise muss erst versioniert werden, wenn keine Rückwärtskompatibilität mehr gewährleistet werden kann.
+Eine neue Version einer Ressource kann über mehrere Wege bereitgestellt und angefragt werden.
+\begin{enumerate}
+  \item Jeder Request kann einen Accept-Header enthalten, der zur Identifikation der zu sendenden Repräsentation genutzt werden kann.
+  Sendet ein Client \zB{} einen Accept-Header mit dem Wert application/vnd.format.v2+json, so kann der Server durch Content-Negotiation anhand des \enquote{v2} die zu sendende Version ermitteln.
+  \item Die URI als Identifikationsmittel kann ebenfalls genutzt werden, um verschiedene Versionen einer Ressource kenntlich zu machen.
+  Die Anfrage an example.com/v2/events entspricht dem Erstellen eines neuen Endpunktes.
+  Der Server muss nun auf einem weiteren Endpunkt antworten können, die Komplexität jedes einzelnen Endpunktes wird jedoch nicht erhöht.
+  \item Für kleine Änderungen, wie das Ändern oder Entfernen eines einzelnen Feldes, ist normalerweise kein neuer Endpunkt nötig.
+  Würde für jede dieser verhältnismäßig kleinen Änderungen ein neuer Endpunkt erstellt werden, ginge schnell die Übersichtlichkeit über die Menge der Endpunkte und deren Unterschiede verloren.
+  Die URI der Ressource kann für verschiedene Versionen genutzt werden und stattdessen die Versionsinformationen im Query String transportiert werden (\zB{} example.com/events?version=2).
+  Diese Variante teilt den gleichen Nachteil, den alle Query String Optionen haben, dass der Serverhandler für diesen Endpunkt komplexer und die Performance verringert wird.
+  Es ist denkbar, dass nicht nur jede einzelne Option geprüft werden muss, sondern dass die Option für die Version der Ressource auch Auswirkung auf andere Optionen hat, sodass der Server einen Entscheidungsbaum auswerten muss, bevor eine Antwort gesendet werden kann.
+\end{enumerate}
+Wurde eine neue Version einer Ressource zur Verfügung gestellt, muss diese auch erreichbar sein.
+Da die Änderungen von Variante 2 und 3 sich allein auf die URI auswirken, müssen in verknüpften Ressourcen die Links zur neuen Version aktualisiert werden.
+Da Header in einem Link nicht repräsentiert werden können, ist es bei der ersten Variante notwendig, dass der Client über die neue Version informiert wird und allen Anfragen an die Ressource den Accept-Header hinzufügt.
+\par
+Beim Entfernen von Funktionalität ist es sinnvoll die aktuelle Nutzung derselben durch Monitoring festzustellen und notwendig die geplanten Änderungen zu kommunizieren.
+Da normalerweise die gesamte Repräsentation einer Ressource als Antwort gesendet wird, kann nur die Nutzung des Endpunktes und nicht die tatsächliche Notwendigkeit einzelner Teile der Ressource bzw.\ Felder ermittelt werden.
+Das ist jedoch möglich, wenn bei jeder Anfrage mittels Includes die gewünschten Felder angegeben werden müssen.
+Sollen einzelne Elemente einer Ressource nicht mehr gesendet werden, so können diese zeitweise den für den Datentyp üblichen Nullwert enthalten, bevor sie endgültig entfernt werden.
+Wird ein Endpunkt der API entfernt, so sollte der Server mit dem entsprechenden HTTP Status Code (410 Gone) antworten und alle Links in verknüpften Ressourcen müssen gelöscht werden.
+Ist eine Ressource lediglich unter einem anderen Endpunkt erreichbar, so kann der Code 310 \enquote{Moved Permanently} den Client automatisch zur neuen URI weiterleiten.
+\par
+Erklärtes Ziel von GraphQL ist es Versionierung zu verhindern und stattdessen die API kontinuierlich, abwärtskompatibel weiterzuentwickeln.
+Da jedes Feld, welches ein Client erhalten möchte, in der Query explizit angegeben werden muss, ist detailreiches Monitoring bis auf Feldebene möglich.
+Im Datenmodell neu eingeführte Felder beeinflussen bestehende Abfragen nicht, können aber jederzeit in diese aufgenommen werden.
+Felder, die zukünftig aus der API entfernt werden sollen, können mit isDeprecated als veraltet gekennzeichnet und ein Grund als Metainformation angegeben werden.
+Diese Kennzeichnung beeinflusst die Abfrage des Feldes nicht, kann aber per Introspektion zur Entwicklungszeit von Tools abgefragt und dem Entwickler als Warnung angezeigt werden.
+Enthält eine Abfrage Felder, die im Schema nicht mehr enthalten sind, schlägt die Abfrage fehl.
+Änderungen in der Auswertungslogik einzelner Felder können über optionale Feldargumente bereitgestellt werden.
+Auch diese beeinflussen bestehende Abfragen ohne diese Argumente nicht.
+Für Feldargumente und Input Typen existiert zur Zeit noch keine Möglichkeit diese als veraltet zu kennzeichnen, ist aber für den nächsten Release der GraphQL Spezifikation geplant.
+Ein GraphQL Server stellt ein Schema und damit alle darin enthaltenen Abfragen unter einer URI bereit.
+Ergibt sich die Notwendigkeit eine neue Version unter einer anderen URI zu veröffentlichen, so können Abfragen die Schemata nicht verbinden und werden vom Server nur im Kontext eines Schemas ausgewertet.
 
 \section{Datenaufkommen/Netzwerklast}
 \begin{itemize}
