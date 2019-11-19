@@ -15,6 +15,22 @@
     \end{itemize}
   \item Herausforderung: einheitliches Kommunikationsprotokoll
 \end{itemize}
+Die Basis für die meisten Anwendungen im Web bildet die Client-Server Architektur.
+Der Nachrichtenaustausch in einem verteilten System wird dabei auf zwei Akteure und eine Interaktion fokussiert.
+Der Client initiiert die Interaktion, indem er eine Nachricht an den Server sendet.
+Der Server reagiert, indem er mit dem Resultat der Auswertung der Nachricht antwortet.
+Ein Client kann mit mehreren Servern in Interaktion treten und mehrere Clients können mit dem gleichen Server kommunizieren.
+Durch die Anfrage werden die Rollen von Client und Server festgelegt, welche jedoch nur für die Dauer der Interaktion gelten.
+So kann ein Akteur, der bei einem Nachrichtenaustausch als Server angefragt wird, während eines anderen selbst als Client die Kommunikation beginnen.
+Bedingung für die Client-Server Architektur ist, dass dem Client zu Beginn der Kommunikation, der Server bekannt ist und dass beide das gleiche Kommunikationsprotokoll unterstützen.
+\par
+Die Entwicklung einer Anwendung nach dieser Architektur hat ein erklärtes Ziel und Hauptvorteil: Die Trennung der Verantwortlichkeiten.
+\par
+Client und Server sind logisch und oft auch physikalisch getrennte Teile einer Anwendung und können unabhängig voneinander entwickelt werden, solange sie ihre Kommunikationsschnittstelle wahren.
+Die damit verbundene Trennung der Verantwortlichkeiten führt zu einer Reduzierung der Komplexität der einzelnen Anwendungen.
+Da Client und Server unabhängig voneinander ausgeführt werden, beeinflusst der Ausfall des einen nicht die Stabilität des anderen.
+Wird der Client als Benutzeroberfläche und der Server als Datenspeicher genutzt, so können beispielsweise mehrere Clients für verschiedene Geräte oder Anwendungsfälle entwickelt und optimiert werden, wodurch die Portabilität der Oberfläche verbessert wird.
+Die Verteilung auf mehrere Geräte erhöht außerdem die Skalierbarkeit des Gesamtsystems.
 
 \section{Web APIs}
 \begin{itemize}
