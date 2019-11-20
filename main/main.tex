@@ -1,4 +1,4 @@
-\documentclass[fontsize=11pt,paper=a4,toc=listof]{scrbook}
+\documentclass[fontsize=11pt,paper=a4,toc=listof,bibliography=toc]{scrbook}
 
 % deutsche Umlaute
 % \usepackage{lmodern}
@@ -12,6 +12,10 @@
 
 % automatische Verlinkung
 \usepackage{hyperref}
+
+% biblatex
+\usepackage[backend=biber]{biblatex}
+\addbibresource{sources.bib}
 
 \newcommand{\zB}{z.~B.\@}
 
@@ -33,5 +37,7 @@
 \input{../Kapitel/kapitel5.tex}
 \input{../Kapitel/kapitel6.tex}
 \input{../Kapitel/kapitel7.tex}
+
+\printbibliography[title=Literaturverzeichnis]
 
 \end{document}

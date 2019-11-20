@@ -8,6 +8,10 @@
 *.lot
 *.toc
 *.out
+*.bbl
+*.bcf
+*.blg
+*.run.xml
 
 # directories
 .vscode/
