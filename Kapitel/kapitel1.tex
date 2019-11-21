@@ -14,6 +14,32 @@
   \item Welche neuen Probleme entstehen erst durch GraphQL\@?
   \item Ist ein gemeinsamer Einsatz von REST und GraphQL sinnvoll und möglich?
 \end{itemize}
+Das Internet (Netz, Web) und Web-Anwendungen unterliegen einem starken Wandel.
+Die Kommerzialisierung, zunehmende Verbreitung und Erweiterung der Möglichkeiten haben zu einer veränderten Nutzung und Entwicklung von Internetanwendungen beigetragen.
+Vom Netzwerk zum Teilen von Hypertextdokumenten ist es zur Plattform/Medium (TODO) für alle Arten interaktiver betrieblicher und sozialer Software geworden.
+\par
+Um der zunehmenden Größe, Komplexität und mangelnden Wartbarkeit der Anwendungen Herr zu werden, hat sich auch in der Webentwicklung der anerkannte Grundsatz \enquote{Teile und Herrsche} durchgesetzt.
+Namentlich ist der Trend von sogenannter monolithischer zu service-orientierter Software zu beobachten.
+Verbesserungen in der Skriptausführung von Webbrowsern und die Weiterentwicklung von JavaScript selbst hatte außerdem zur Folge, dass immer mehr Teile der Programme auf dem Client ausgeführt werden.
+Zeuge dieser Entwicklung sind die vielen JavaScript Frameworks (z.B. Angular, React, Vue), welche besonders innerhalb der letzten 10 Jahre populär geworden sind und mittlerweile zum Standard der Webentwicklung gehören, sowie Projekte wie Electron und NativeScript, welche Webtechnologien nutzen, um native Anwendungen zu entwickeln. (TODO: Stackoverflow survey als Quelle)
+Mit diesen Frameworks entwickelte Single Page Applications (SPA) generieren Ansichten und Dialoge auf Basis von Daten, welche über Web APIs mit dem Server ausgetauscht werden.
+Oft kommunizieren Anwendungen mit einer Vielzahl von Webservices, \zB{} um unternehmensinterne oder externe Datenquellen oder Dienste zu integrieren.
+\par
+Um eine einheitliche Kommunikationsschnittstelle für die Interaktion von Clientanwendungen und Webservices zu schaffen, werden APIs häufig nach dem Representational State Transfer Architekturkonzept (REST) entwickelt.
+Da REST aber nur Rahmenbedingungen und die Grundgedanken für Web-APIs liefert, finden sich in der Praxis viele Formate und Modelle, welche versuchen Implementierungsdetails und Best-Practices auszuführen.
+Die Bezeichnung REST-API ist somit aufgeweicht worden und Entwickler sind, aufgrund mangelnder Standards, zu API spezifischen Anpassungen gezwungen.
+\par
+GraphQL wurde 2015 von Facebook veröffentlicht und bringt eine Spezifikation und Abfragesprache für die Client-Server Kommunikation.
+Die Implementierung einer GraphQL-API unterscheidet sich gravierend von bestehenden REST-APIs, mittlerweile existieren aber wichtige Entwicklerwerkzeuge und die ersten GraphQL-APIs haben sich in der Praxis bewährt. (TODO: Github als Quelle)
+\par
+Die vorliegende Arbeit soll mehrere Fragen bezüglich der beiden Ansätze für bestehende Web-APIs und Neuentwicklungen klären:
+\begin{enumerate}
+  \item Welche Vorteile bietet GraphQL\@?
+  \item Welche Probleme entstehen erst durch GraphQL\@?
+  \item Für welche Anwendungszwecke kann eine GraphQL-API eine REST-API ersetzen?
+  \item Ist ein gemeinsamer Einsatz der beiden Ansätze möglich und sinnvoll?
+\end{enumerate}
+
 \section{Aufbau der Arbeit}
 \begin{itemize}
   \item Betrachtung der Entwicklung von Web Anwendungen mit der Client-Server Architektur als Grundlage
