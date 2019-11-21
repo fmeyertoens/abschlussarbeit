@@ -41,6 +41,15 @@ Die Verteilung auf mehrere Geräte erhöht außerdem die Skalierbarkeit des Gesa
   \item Hauptaugenmerk auf Systemen mit Fat-Client. Großer Teil der Anwendungslogik auf Clientseite. Server dient als Datenspeicher. Hauptinteraktionen mit CRUD (Create, Read, Update, Delete)
   \item Popularität von Cloudservices und öffentlichen APIs bzw. Interaktion mit externen Services
 \end{itemize}
+Eine Software kann einen Teil seiner Funktionalität über Schnittstellen externen Programmen zur Verfügung stellen.
+Solche Application Programming Interfaces (API) ermöglichen die Kommunikation zwischen Programmen durch das parametrisierte Aufrufen der öffentlich gemachten Funktionen einerseits und das Antworten mit dem Ergebnis der Funktion andererseits.
+Das Verstecken der zugrundeliegenden Komplexität ist ein großer Vorteil der Verwendung von APIs und führt zu Unabhängigkeit von Implementierungsdetails.
+Externe Programme sind jedoch abhängig von der Schnittstelle, welche daher als Kommunikationsobjekt Vertragscharakter bekommt.
+Für die meisten Programmiersprachen existieren Programmbibliotheken, die zur Entwicklungszeit grundlegende und immerwieder benötigte Funktionalität bereitstellen, aber besonders Cloudservices und öffentliche APIs haben in den letzten Jahren an Popularität erlangt, da sie mit HTTP eine sprachunabhängige Schnittstelle bieten.
+Die vorliegende Arbeit beschränkt sich auf API von verteilten Systemen im Web.
+Web-Frameworks werden häufig auch als Fat-Client Anwendungen bezeichnet, da ein beträchtlicher Teil der Programmlogik, sowie die Benutzeroberfläche auf Clientseite ausgeführt wird.
+Da der Server in solchen Anwendungen als Zugangspunkt und Speicher für Daten dient, sind die APIs geprägt von der Übertragung der Daten zur Anzeige im Client und der Modifikation der Daten auf dem Server.
+Gemäß den Hauptinteraktionen werden diese APIs auch als CRUD (Create, Read, Update, Delete) APIs bezeichnet.
 
 \section{Abgrenzung zu anderen Web API Ansätzen}
 \begin{itemize}
