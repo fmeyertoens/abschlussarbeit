@@ -7,14 +7,19 @@
 \usepackage{textcomp}
 
 % deutsche Silbentrennung
-\usepackage[ngerman]{babel}
+\usepackage[english,ngerman]{babel}
 \usepackage{csquotes}
 
 % automatische Verlinkung
 \usepackage{hyperref}
 
+% Bilder
+\usepackage{graphicx}
+
 % biblatex
-\usepackage[backend=biber]{biblatex}
+\usepackage[
+  style=ieee,
+  backend=biber]{biblatex}
 \addbibresource{sources.bib}
 
 \newcommand{\zB}{z.~B.\@}

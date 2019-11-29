@@ -4,7 +4,13 @@
   \item Bekanntmachung Roy T. Fielding in Dissertation 2000
   \item Akronym für Representational State Transfer
   \item Prinzipien für die Entwicklung von verteilten Systemen. Baut auf bekannten Architekturen auf (Client-Server)
+  \item REST hatte Einfluss (und macht Gebrauch von) HTTP und URI (IRI)
 \end{itemize}
+Das Architekturkonzept des Representational State Transfer wurde erstmals im Jahr 2000 von Roy T. Fielding erwähnt, definiert und mit dem Akronym REST bezeichnet.\cite[76]{REST}
+Es enthält eine Reihe von Prinzipien für die Entwicklung von verteilten Systemen im Web mit besonderem Fokus auf den Schnittstellen zwischen den einzelnen Elementen.
+Dabei baut REST auf der Client-Server-Architektur auf und hatte Einfluss auf die Entwicklung von HTTP und URI, wodurch jene Schnittstellen im Web definiert werden.\cite[vgl.][4,105f.]{REST}
+REST beschreibt größtenteils die Architektur des Web selbst und ist daher nicht auf APIs ausgelegt oder beschränkt.
+Durch die Arbeit von Fielding in den HTTP- und URI-Arbeitsgruppen hatten seine Gedanken zu REST direkten Einfluss in die Entwicklung der beiden Standards.\cite[107]{REST}
 
 \section{Grundlagen}
 \begin{itemize}
@@ -15,7 +21,12 @@
     \item unabhängige Entwicklung der Komponenten
     \item Zwischenkomponenten können spezielle Aufgaben übernehmen (Cache, Sicherheit, Schnittstelle zu Altsystemen)
   \end{itemize}
-  \item REST hatte Einfluss (und macht Gebrauch von) HTTP und URI (IRI)
+\end{itemize}
+\subsubsection{Ziele von REST}
+Die Ziele und Vorteile einer Anwendung auf Basis von REST lassen sich folgendermaßen zusammenfassen:
+\foreignblockcquote{english}[105]{REST}{REST provides a set of architectural constraints that, when applied as a whole, emphasizes scalability of component interactions, generality of interfaces, independent deployment of components, and intermediary components to reduce interaction latency, enforce security, and encapsulate  legacy  systems.}
+Diese Ziele werden erreicht durch eine Reihe von Anforderungen.
+\begin{itemize}
   \item REST ist zustandslos (daher auch client-stateless-server). Jeder Request von Client zu Server beinhaltet alle notwendigen Informationen, um den Request zu verstehen.
   \item Client speichert gewöhnlich Zustand. Server behält keine Clientsession bei.
   \item Vorteile
@@ -36,6 +47,29 @@
     \item bessere Effizienz und Skalierbarkeit, erhöhte gefühlte Performance durch Verringerung der durchschnittlichen Latenz (jede einzelne Latenz durch Cache-Lookup erhöht)
     \item verringerte Verlässlichkeit je stärker gecachte Daten von tatsächlichen Daten abweichen
   \end{itemize}
+\end{itemize}
+Die REST Architektur baut auf der weit verbreiteten Client-Server Architektur auf.
+REST ist zustandslos, sodass jede Anfrage vom Client zum Server alle für deren Verarbeitung notwendigen Informationen beinhalten muss.
+Ein Client speichert gewöhnlich seinen Zustand, während auf Serverseite keine Zustandsinformationen über mehrere Anfragen hinweg gespeichert werden, wie es zum Beispiel bei Sessions der Fall ist.
+Aufgrund dieser Eigenschaft wird im Zusammenhang mit REST auch von einer \textcquote[83]{REST}{Client-Cache-Stateless-Server[-Architektur]} gesprochen.
+Hieraus ergeben sich drei Vorteile:\cite[vgl.][79]{REST}
+\begin{itemize}
+  \item Sichtbarkeit:
+  Jede Anfrage kann separat untersucht werden, ohne weitere Informationen zu benötigen.
+  \item Zuverlässigkeit:
+  Anfragen können atomar betrachtet und bei Teilfehlern kann der Systemzustand leicht wiederhergestellt werden.
+  \item Skalierbarkeit:
+  Da ein Server Zustandsinformationen nur für die Dauer der Verarbeitung einer Anfrage speichert, können Ressourcen schnell wieder freigegeben werden.
+\end{itemize}
+Nachteil dieser Anforderung ist eine verringerte Netzwerkperformance, da bei sequenziellen Anfragen an einen Server, Daten zur Clientidentifikation, Authentifizierung oder aus vorangegangene Antworten erneut gesendet werden müssen.
+Die verringerte Kopplung führt ebenfalls dazu, dass die Kontrolle des Servers über das Verhalten der Clientanwendung reduziert wird.
+\par
+Clientseitiges Speichern von erhaltenen Daten (Caching) erlaubt die Wiederverwendung früherer Serverantworten für zukünftige, gleiche Anfragen und ist sinnvoll, da die gefühlte Performance durch Verringerung der durchschnittlichen Latenz erhöht wird.
+Dadurch wird die Effizienz und Skalierbarkeit der Anwendung erhöht, obwohl jede einzelne Latenz durch den Cache-Lookup erhöht wird.
+Je mehr die gespeicherten Daten von den tatsächlichen Daten abweichen, desto mehr verringert sich die Verlässlichkeit derselben.\cite[vgl.][80]{REST}
+GET-Requests werden von Webbrowsern implizit gecacht, wobei Server das Caching explizit erlauben und verbieten können.
+
+\begin{itemize}
   \item 4 Grundsätze für Komponentenschnittstellen
   \begin{itemize}
     \item Identifizierung von Ressourcen
@@ -62,6 +96,22 @@
   \item REST ermöglicht Verbindung zu anderen nicht-REST Systemen, indem diese eine REST-konforme Schnittstelle bereitstellen.
   \item Abbildung REST connectors and components
 \end{itemize}
+REST beschreibt drei Typen von Komponenten:\cite[vgl.][96]{REST}
+\begin{itemize}
+  \item User Agent:
+  Dies kann ein Webbrowser bzw.\ die Benutzeranwendung sein, in jedem Fall jedoch der letztendliche Empfänger der Antwort.
+  \item Origin Server:
+  Die endgültige Quelle der Repräsentation einer Ressource und der letztendliche Empfänger von Request, die zu Modifikationen der Daten führen.
+  \item Intermediary:
+  Diese befinden sich zwischen User Agent und Origin Server und können sowohl als Client, als auch als Server agieren. Sie leiten Anfragen und Antworten weiter, können diese aber auch modifizieren. Je nach Anwendungsfall spricht man hier von einem Gateway oder Proxy.
+\end{itemize}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{../Kapitel/Grafiken/REST-dissertation.png}
+  \caption{REST}
+  \label{img:REST-diss}
+\end{figure}
 
 \section{Implementierung von RESTful APIs}
 \begin{itemize}
