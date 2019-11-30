@@ -1,16 +1,9 @@
 \chapter{Das REST Architekturkonzept}
 \section{Entstehung}
-\begin{itemize}
-  \item Bekanntmachung Roy T. Fielding in Dissertation 2000
-  \item Akronym für Representational State Transfer
-  \item Prinzipien für die Entwicklung von verteilten Systemen. Baut auf bekannten Architekturen auf (Client-Server)
-  \item REST hatte Einfluss (und macht Gebrauch von) HTTP und URI (IRI)
-\end{itemize}
 Das Architekturkonzept des Representational State Transfer wurde erstmals im Jahr 2000 von Roy T. Fielding erwähnt, definiert und mit dem Akronym REST bezeichnet.\cite[76]{REST}
-Es enthält eine Reihe von Prinzipien für die Entwicklung von verteilten Systemen im Web mit besonderem Fokus auf den Schnittstellen zwischen den einzelnen Elementen.
-Dabei baut REST auf der Client-Server-Architektur auf und hatte Einfluss auf die Entwicklung von HTTP und URI, wodurch jene Schnittstellen im Web definiert werden.\cite[vgl.][4,105f.]{REST}
+Es enthält eine Reihe von Prinzipien für die Entwicklung von verteilten Systemen im Web mit besonderem Fokus auf den Schnittstellen zwischen den einzelnen Komponenten.
+Dabei baut REST auf der Client-Server-Architektur auf und hatte durch die Arbeit vib Fielding in den HTTP- und URI-Arbeitsgruppen direkten Einfluss auf die Entwicklung von der beiden Standards, wodurch jene Schnittstellen im Web definiert werden.\cite[vgl.][4,105f.]{REST}
 REST beschreibt größtenteils die Architektur des Web selbst und ist daher nicht auf APIs ausgelegt oder beschränkt.
-Durch die Arbeit von Fielding in den HTTP- und URI-Arbeitsgruppen hatten seine Gedanken zu REST direkten Einfluss in die Entwicklung der beiden Standards.\cite[107]{REST}
 
 \section{Grundlagen}
 \begin{itemize}
@@ -26,38 +19,26 @@ Durch die Arbeit von Fielding in den HTTP- und URI-Arbeitsgruppen hatten seine G
 Die Ziele und Vorteile einer Anwendung auf Basis von REST lassen sich folgendermaßen zusammenfassen:
 \foreignblockcquote{english}[105]{REST}{REST provides a set of architectural constraints that, when applied as a whole, emphasizes scalability of component interactions, generality of interfaces, independent deployment of components, and intermediary components to reduce interaction latency, enforce security, and encapsulate  legacy  systems.}
 Diese Ziele werden erreicht durch eine Reihe von Anforderungen.
-\begin{itemize}
-  \item REST ist zustandslos (daher auch client-stateless-server). Jeder Request von Client zu Server beinhaltet alle notwendigen Informationen, um den Request zu verstehen.
-  \item Client speichert gewöhnlich Zustand. Server behält keine Clientsession bei.
-  \item Vorteile
-  \begin{itemize}
-    \item Sichtbarkeit: Requests können einzeln untersucht werden
-    \item Zuverlässigkeit: einfachere Wiederherstellung bei teilweisen Fehlern
-    \item Skalierbarkeit: Server kann schnell Ressourcen wieder freigeben. Speichert keine Zustände
-  \end{itemize}
-  \item Nachteile
-  \begin{itemize}
-    \item verringerte Netzwerkperformance, da mit jedem Request Daten wiederholt
-    \item verringerte Kontrolle des Servers über Verhalten der Clientanwendung
-  \end{itemize}
-  \item Clientseitiges Caching
-  \begin{itemize}
-    \item Ressourcen implizit oder explizit gecacht
-    \item erlaubt Wiederverwendung früherer Serverantworten für zukünftige, gleiche Requests
-    \item bessere Effizienz und Skalierbarkeit, erhöhte gefühlte Performance durch Verringerung der durchschnittlichen Latenz (jede einzelne Latenz durch Cache-Lookup erhöht)
-    \item verringerte Verlässlichkeit je stärker gecachte Daten von tatsächlichen Daten abweichen
-  \end{itemize}
-\end{itemize}
-Die REST Architektur baut auf der weit verbreiteten Client-Server Architektur auf.
+\par
+Die REST Architektur baut auf der weit verbreiteten Client-Server Architektur auf und definiert den Begriff der Ressource als Abstraktion für jede Art von Information, die Ziel einer Client-Anfrage ist.\cite[vgl.][88f.]{REST}
+Digitale \textcquote[88]{REST}{Dokumente oder Bilder, [\dots] eine Sammlung anderer Ressourcen [\dots][und selbst] nicht-virtuelle Objekte} können solche Ressourcen sein.
+Eine Ressource wird durch einen Bezeichner bekannt gemacht und ist damit für einen Client abrufbar.
+Der Bezeichner bleibt gleich, selbst wenn sich die damit identifizierte Ressource ändert.
+Die Kommunikation einer Ressource vom Server zum Client erfolgt über eine Repräsentation der Ressource, d.h.\ ein Datenformat, welches vom Server festgelegt, oder durch Content-Negotiation zwischen Client und Server ausgehandelt wird.
+Somit bleibt der Ursprung der Daten hinter der Serverschnittstelle versteckt.
+Die Antwort des Servers enthält die Daten der Repräsentation und deren Metadaten.
+Anfrage und Antwort enthalten außerdem Kontrolldaten, um die Bedeutung der Nachricht zu vermitteln.\cite[vgl.][90f.]{REST}
+TODO: Tabelle 5. - 1 REST Data Elements am Beispiel
+\par
 REST ist zustandslos, sodass jede Anfrage vom Client zum Server alle für deren Verarbeitung notwendigen Informationen beinhalten muss.
 Ein Client speichert gewöhnlich seinen Zustand, während auf Serverseite keine Zustandsinformationen über mehrere Anfragen hinweg gespeichert werden, wie es zum Beispiel bei Sessions der Fall ist.
-Aufgrund dieser Eigenschaft wird im Zusammenhang mit REST auch von einer \textcquote[83]{REST}{Client-Cache-Stateless-Server[-Architektur]} gesprochen.
+Aufgrund dieser Eigenschaft wird im Zusammenhang mit REST auch von einer \foreigntextcquote{english}[83]{REST}{Client-Cache-Stateless-Server[-Architektur]} gesprochen.
 Hieraus ergeben sich drei Vorteile:\cite[vgl.][79]{REST}
 \begin{itemize}
   \item Sichtbarkeit:
-  Jede Anfrage kann separat untersucht werden, ohne weitere Informationen zu benötigen.
+  Jede Anfrage kann separat untersucht und gecacht werden, ohne weitere Informationen zu benötigen.
   \item Zuverlässigkeit:
-  Anfragen können atomar betrachtet und bei Teilfehlern kann der Systemzustand leicht wiederhergestellt werden.
+  Anfragen können atomar betrachtet und bei Teilfehlern kann ein stabiler Systemzustand leicht wiederhergestellt werden.
   \item Skalierbarkeit:
   Da ein Server Zustandsinformationen nur für die Dauer der Verarbeitung einer Anfrage speichert, können Ressourcen schnell wieder freigegeben werden.
 \end{itemize}
@@ -65,9 +46,9 @@ Nachteil dieser Anforderung ist eine verringerte Netzwerkperformance, da bei seq
 Die verringerte Kopplung führt ebenfalls dazu, dass die Kontrolle des Servers über das Verhalten der Clientanwendung reduziert wird.
 \par
 Clientseitiges Speichern von erhaltenen Daten (Caching) erlaubt die Wiederverwendung früherer Serverantworten für zukünftige, gleiche Anfragen und ist sinnvoll, da die gefühlte Performance durch Verringerung der durchschnittlichen Latenz erhöht wird.
-Dadurch wird die Effizienz und Skalierbarkeit der Anwendung erhöht, obwohl jede einzelne Latenz durch den Cache-Lookup erhöht wird.
+Dadurch wird die Effizienz und Skalierbarkeit der Anwendung erhöht, obwohl die Latenz jeder einzelnen Anfrage durch den Cache-Lookup erhöht wird.
 Je mehr die gespeicherten Daten von den tatsächlichen Daten abweichen, desto mehr verringert sich die Verlässlichkeit derselben.\cite[vgl.][80]{REST}
-GET-Requests werden von Webbrowsern implizit gecacht, wobei Server das Caching explizit erlauben und verbieten können.
+GET-Requests werden von Webbrowsern implizit gecacht, wobei Server das gewünschte Caching-Verhalten explizit erlauben und verbieten können.
 
 \begin{itemize}
   \item 4 Grundsätze für Komponentenschnittstellen
@@ -80,18 +61,7 @@ GET-Requests werden von Webbrowsern implizit gecacht, wobei Server das Caching e
   \item Die Daten werden zum Ort der Verarbeitung geschickt, nicht die Anweisungen zu den Daten.
   \item Komponenten in REST Architektur sehen nur Komponenten, mit denen sie direkt interagieren (Schichten). Begrenztes Wissen verringert Komplexität. Schichten ermöglichen Kapselung. Zwischenkomponenten (Proxies) können Daten transformieren (wie Pipes/Filter)
   \item Schichtenarchitektur bedeutet mehr Datenverarbeitung und Latenz
-  \item Client kann Repräsentation der Daten wählen. Ursprung der Daten hinter Serverinterface versteckt
-  \item Ressourcen ist Abstraktion für jede Art Information (Dokumente, Bilder, Sammlung anderer Ressourcen)
-  \item Jede Webseite ist Ressource
-  \item Ressource wird durch Identifier (Bezeichner) bekannt gemacht und abrufbar. Bezeichner ändert sich nicht, wenn sich die Ressource ändert. Mehrere Ressourcen können die gleichen Informationen beinhalten.
-  \item Repräsentation einer Ressource (Antwort des Servers) besteht aus Daten und Metadaten
   \item Kontrolldaten übermitteln den Zweck der Nachricht oder zum Umgang mit der Nachricht (HTTP Methoden, Status codes, Header)
-  \item REST kennt drei Komponententypen:
-  \begin{itemize}
-    \item user agent: Web Browser, Benutzeranwendung, letztendlicher Empfänger der Antwort
-    \item origin server: endgültige Quelle der Repräsentation der Ressource, letztendlicher Empfänger von Requests, die Modifikationen vornehmen; bietet Schnittstelle als Hierarchie von Ressourcen
-    \item intermediary: agiert sowohl als Client, als auch als Server; leitet Requests und Responses weiter bzw.\ modifiziert sie; Gateway oder Proxy;
-  \end{itemize}
   \item Leichtes Einführen von Zwischenkomponenten möglich durch selbstbeschreibende Nachrichten, generische Client- und Server-Schnittstellen und zustandslose Kommunikation. Keine einzige Komponente braucht Überblick über ganzes System.
   \item REST ermöglicht Verbindung zu anderen nicht-REST Systemen, indem diese eine REST-konforme Schnittstelle bereitstellen.
   \item Abbildung REST connectors and components
@@ -105,6 +75,14 @@ REST beschreibt drei Typen von Komponenten:\cite[vgl.][96]{REST}
   \item Intermediary:
   Diese befinden sich zwischen User Agent und Origin Server und können sowohl als Client, als auch als Server agieren. Sie leiten Anfragen und Antworten weiter, können diese aber auch modifizieren. Je nach Anwendungsfall spricht man hier von einem Gateway oder Proxy.
 \end{itemize}
+An die Schnittstellen dieser Komponenten werden folgende Anforderungen gestellt:\cite[vgl.][82]{REST}
+\begin{itemize}
+  \item Ressourcen müssen durch einen Bezeichner eindeutig identifizierbar sein.
+  \item Die Interaktion mit einer Ressource, d.h.\ das Abfragen und Manipulieren derselben erfolgt über eine Repräsentation derselben.
+  \item Nachrichten müssen so selbsterklärend sein, dass sie von der Schnittstelle aufgenommen und verstanden werden können.
+  \item \foreigntextcquote{english}[82]{REST}{hypermedia as the engine of application state} (HATEOAS): Der Hypertext beschreibt den Zustand der Anwendung und beschreibt die Möglichkeiten der Veränderung desselben.
+\end{itemize}
+
 
 \begin{figure}[h]
   \centering
@@ -151,3 +129,4 @@ REST beschreibt drei Typen von Komponenten:\cite[vgl.][96]{REST}
   \item JSON:API
   \item Abbildung Beispiel Request und Response
 \end{itemize}
+REST bleibt Implementierungsdetails schuldig\cite[vgl.][86]{REST}
