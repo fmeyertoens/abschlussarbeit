@@ -28,7 +28,23 @@ Die Kommunikation einer Ressource vom Server zum Client erfolgt über eine Repr�
 Somit bleibt der Ursprung der Daten hinter der Serverschnittstelle versteckt.
 Die Antwort des Servers enthält die Daten der Repräsentation und deren Metadaten.
 Anfrage und Antwort enthalten außerdem Kontrolldaten, um die Bedeutung der Nachricht zu vermitteln.\cite[vgl.][90f.]{REST}
-TODO: Tabelle 5. - 1 REST Data Elements am Beispiel
+\begin{table}[h!]
+  \begin{center}
+    \caption{REST Data Elements}
+    \label{tab:REST Data Elemens}
+    \begin{tabularx}{\textwidth}{XXX}
+      \toprule
+      \textbf{Data Element} & \textbf{Web Equivalent} & \textbf{Example}\\
+      \midrule
+      resource & the intended conceptual target of a hypertext reference & a list of events\\
+      resource identifier & URI & http://example.com/events\\
+      representation data & HTML, JSON Document, PNG image & \{events:[\{title:\dots\},\{\dots\}]\}\\
+      representation metadata & media type, last-modified time, ETag & Content-Type: application/json\\
+      & & Content-Encoding: gzip\\
+      control data & if-modified-since, cache-control, request method & GET, Cache-Control: no-cache\\
+    \end{tabularx}
+  \end{center}
+\end{table}
 \par
 REST ist zustandslos, sodass jede Anfrage vom Client zum Server alle für deren Verarbeitung notwendigen Informationen beinhalten muss.
 Ein Client speichert gewöhnlich seinen Zustand, während auf Serverseite keine Zustandsinformationen über mehrere Anfragen hinweg gespeichert werden, wie es zum Beispiel bei Sessions der Fall ist.
