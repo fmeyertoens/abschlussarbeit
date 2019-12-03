@@ -1,5 +1,10 @@
 \chapter{Vergleich}
-
+\section{Testumgebung}
+Für den Vergleich der beiden API Ansätze wurde eine Single-Page Anwendung mit dem Vue.js Framework als Client und jeweils eine REST API und GraphQL API mit der Node.js Serverlaufzeitumgebung entwickelt.
+Als Datenquelle dient zum einen eine MongoDB Datenbank, sowie Dateien im JSON Format.
+Durch die Verteilung der jeweiligen Softwarekomponenten auf physikalisch unterschiedliche Rechner, lassen sich mehrere Anwendungsfälle abbilden.
+So wurden die Clientanwendung, die Serveranwendungen und die Datenbank in verschiedenen Kombinationen lokal und von Cloudumgebungen (Azure, Heroku, MongoDB Atlas) gehostet und ausgeführt.
+Die JSON Dateien als Alternative zur Datenbank ermöglichen es die Cloudanwendung nicht unnötig zu belasten und den durch Datenbankabfragen entstehenden Overhead auf die deutlich schnellere Dateilesezeit zu minimieren.
 \section{Abfrageflexibilität}
 \begin{itemize}
   \item nicht nur Abfrage (GET) sondern auch Änderungsoperationen (POST,\dots)
