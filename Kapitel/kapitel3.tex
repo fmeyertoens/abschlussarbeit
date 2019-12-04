@@ -6,20 +6,11 @@ Dabei baut REST auf der Client-Server-Architektur auf und hatte durch die Arbeit
 REST beschreibt größtenteils die Architektur des Web selbst und ist daher nicht auf APIs ausgelegt oder beschränkt.
 
 \section{Grundlagen}
-\begin{itemize}
-  \item Ziele von REST
-  \begin{itemize}
-    \item skalierbare Komponenteninteraktionen
-    \item generische Interfaces
-    \item unabhängige Entwicklung der Komponenten
-    \item Zwischenkomponenten können spezielle Aufgaben übernehmen (Cache, Sicherheit, Schnittstelle zu Altsystemen)
-  \end{itemize}
-\end{itemize}
 \subsubsection{Ziele von REST}
-Die Ziele und Vorteile einer Anwendung auf Basis von REST lassen sich folgendermaßen zusammenfassen:
+Die Ziele und Vorteile der REST Architektur lassen sich folgendermaßen zusammenfassen:
 \foreignblockcquote{english}[105]{REST}{REST provides a set of architectural constraints that, when applied as a whole, emphasizes scalability of component interactions, generality of interfaces, independent deployment of components, and intermediary components to reduce interaction latency, enforce security, and encapsulate  legacy  systems.}
 Diese Ziele werden erreicht durch eine Reihe von Anforderungen.
-\par
+\subsubsection{Komponenten und Prinzipien}
 Die REST Architektur baut auf der weit verbreiteten Client-Server Architektur auf und definiert den Begriff der Ressource als Abstraktion für jede Art von Information, die Ziel einer Client-Anfrage ist.\cite[vgl.][88f.]{REST}
 Digitale \textcquote[88]{REST}{Dokumente oder Bilder, [\dots] eine Sammlung anderer Ressourcen [\dots][und selbst] nicht-virtuelle Objekte} können solche Ressourcen sein.
 Eine Ressource wird durch einen Bezeichner bekannt gemacht und ist damit für einen Client abrufbar.
@@ -27,7 +18,7 @@ Der Bezeichner bleibt gleich, selbst wenn sich die damit identifizierte Ressourc
 Die Kommunikation einer Ressource vom Server zum Client erfolgt über eine Repräsentation der Ressource, d.h.\ ein Datenformat, welches vom Server festgelegt, oder durch Content-Negotiation zwischen Client und Server ausgehandelt wird.
 Somit bleibt der Ursprung der Daten hinter der Serverschnittstelle versteckt.
 Die Antwort des Servers enthält die Daten der Repräsentation und deren Metadaten.
-Anfrage und Antwort enthalten außerdem Kontrolldaten, um die Bedeutung der Nachricht zu vermitteln.\cite[vgl.][90f.]{REST}
+Anfrage und Antwort enthalten außerdem Kontrolldaten, \zB{} HTTP Request Methods, Status Codes und Header, um die Bedeutung der Nachricht zu vermitteln.\cite[vgl.][90f.]{REST}
 \begin{table}[h!]
   \begin{center}
     \caption{REST Data Elements}
@@ -66,48 +57,36 @@ Dadurch wird die Effizienz und Skalierbarkeit der Anwendung erhöht, obwohl die 
 Je mehr die gespeicherten Daten von den tatsächlichen Daten abweichen, desto mehr verringert sich die Verlässlichkeit derselben.\cite[vgl.][80]{REST}
 GET-Requests werden von Webbrowsern implizit gecacht, wobei Server das gewünschte Caching-Verhalten explizit erlauben und verbieten können.
 
-\begin{itemize}
-  \item 4 Grundsätze für Komponentenschnittstellen
-  \begin{itemize}
-    \item Identifizierung von Ressourcen
-    \item Manipulation von Ressourcen durch ihre Repräsentation
-    \item Selbsterklärende Nachrichten
-    \item `hypermedia as the engine of application state'
-  \end{itemize}
-  \item Die Daten werden zum Ort der Verarbeitung geschickt, nicht die Anweisungen zu den Daten.
-  \item Komponenten in REST Architektur sehen nur Komponenten, mit denen sie direkt interagieren (Schichten). Begrenztes Wissen verringert Komplexität. Schichten ermöglichen Kapselung. Zwischenkomponenten (Proxies) können Daten transformieren (wie Pipes/Filter)
-  \item Schichtenarchitektur bedeutet mehr Datenverarbeitung und Latenz
-  \item Kontrolldaten übermitteln den Zweck der Nachricht oder zum Umgang mit der Nachricht (HTTP Methoden, Status codes, Header)
-  \item Leichtes Einführen von Zwischenkomponenten möglich durch selbstbeschreibende Nachrichten, generische Client- und Server-Schnittstellen und zustandslose Kommunikation. Keine einzige Komponente braucht Überblick über ganzes System.
-  \item REST ermöglicht Verbindung zu anderen nicht-REST Systemen, indem diese eine REST-konforme Schnittstelle bereitstellen.
-  \item Abbildung REST connectors and components
-\end{itemize}
 REST beschreibt drei Typen von Komponenten:\cite[vgl.][96]{REST}
 \begin{itemize}
   \item User Agent:
   Dies kann ein Webbrowser bzw.\ die Benutzeranwendung sein, in jedem Fall jedoch der letztendliche Empfänger der Antwort.
   \item Origin Server:
   Die endgültige Quelle der Repräsentation einer Ressource und der letztendliche Empfänger von Request, die zu Modifikationen der Daten führen.
-  \item Intermediary:
+  \item Intermediary (Zwischenkomponenten):
   Diese befinden sich zwischen User Agent und Origin Server und können sowohl als Client, als auch als Server agieren. Sie leiten Anfragen und Antworten weiter, können diese aber auch modifizieren. Je nach Anwendungsfall spricht man hier von einem Gateway oder Proxy.
 \end{itemize}
-An die Schnittstellen dieser Komponenten werden folgende Anforderungen gestellt:\cite[vgl.][82]{REST}
+Für die Schnittstellen der Komponenten gelten folgende Grundsätze:\cite[vgl.][82]{REST}
 \begin{itemize}
   \item Ressourcen müssen durch einen Bezeichner eindeutig identifizierbar sein.
-  \item Die Interaktion mit einer Ressource, d.h.\ das Abfragen und Manipulieren derselben erfolgt über eine Repräsentation derselben.
-  \item Nachrichten müssen so selbsterklärend sein, dass sie von der Schnittstelle aufgenommen und verstanden werden können.
-  \item \foreigntextcquote{english}[82]{REST}{hypermedia as the engine of application state} (HATEOAS): Der Hypertext beschreibt den Zustand der Anwendung und beschreibt die Möglichkeiten der Veränderung desselben.
+  \item Die Interaktion mit einer Ressource, d.h.\ das Abfragen und Manipulieren derselben erfolgt über eine Repräsentation der Ressource.
+  \item Nachrichten müssen so selbsterklärend sein, dass sie von der Schnittstelle verstanden und verarbeitet werden können.
+  \item \foreigntextcquote{english}[82]{REST}{hypermedia as the engine of application state} (HATEOAS): Der Hypertext beschreibt den Zustand der Anwendung und die Möglichkeiten der Veränderung desselben.
 \end{itemize}
-
-
+\par
+Durch die generischen Client- und Serverschnittstellen, die selbstbeschreibenden Nachrichten und die zustandslose Kommunikation kann eine REST Anwendung leicht von Schichten profitieren.
+Keine einzelne Komponente benötigt Kenntnis des gesamten Informationsweges, sondern sieht nur die Komponenten, mit denen sie direkt interagiert, sodass zwischen
+User-Agent und Origin-Server Zwischenkomponenten eingeführt werden können, um spezifische Aufgaben, wie Caching, Kapselung, Load Balancing und Datentransformation, zu übernehmen.\cite[vgl.][99]{REST}
+Die so verbesserte Skalierbarkeit des Servers bringt jedoch mehr Datenverarbeitung durch die Zwischenkomponenten und somit höhere Latenzzeiten mit sich.\cite[vgl.][83,98]{REST}
 \begin{figure}[h]
   \centering
-  \includegraphics[width=\linewidth]{../Kapitel/Grafiken/REST-dissertation.png}
-  \caption{REST}
+  \includegraphics[width=\linewidth]{../Kapitel/Grafiken/REST-process-view.png}
+  \caption{REST \cite[84]{REST}}
   \label{img:REST-diss}
 \end{figure}
 
 \section{Implementierung von RESTful APIs}
+
 \begin{itemize}
   \item APIs die dem REST Archtekturstil folgen werden RESTful genannt
   \item Richardson Maturity Model ermöglicht Bestimmung wie REST konform Web service (API) ist
