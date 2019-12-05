@@ -5,6 +5,12 @@ Als Datenquelle dient zum einen eine MongoDB Datenbank, sowie Dateien im JSON Fo
 Durch die Verteilung der jeweiligen Softwarekomponenten auf physikalisch unterschiedliche Rechner, lassen sich mehrere Anwendungsfälle abbilden.
 So wurden die Clientanwendung, die Serveranwendungen und die Datenbank in verschiedenen Kombinationen lokal und von Cloudumgebungen (Azure, Heroku, MongoDB Atlas) gehostet und ausgeführt.
 Die JSON Dateien als Alternative zur Datenbank ermöglichen es die Cloudanwendung nicht unnötig zu belasten und den durch Datenbankabfragen entstehenden Overhead auf die deutlich schnellere Dateilesezeit zu minimieren.
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{../Kapitel/Grafiken/netzwerk.png}
+  \caption{Testumgebung}
+  \label{img:REST-diss}
+\end{figure}
 \section{Abfrageflexibilität}
 \begin{itemize}
   \item nicht nur Abfrage (GET) sondern auch Änderungsoperationen (POST,\dots)
@@ -138,6 +144,7 @@ Für Feldargumente und Input Typen existiert zur Zeit noch keine Möglichkeit di
 Ein GraphQL Server stellt ein Schema und damit alle darin enthaltenen Abfragen unter einer URI bereit.
 Ergibt sich die Notwendigkeit eine neue Version unter einer anderen URI zu veröffentlichen, so können Abfragen die Schemata nicht verbinden und werden vom Server nur im Kontext eines Schemas ausgewertet.
 \section{Performance}
+
 
 \section{Datenaufkommen/Netzwerklast}
 \begin{itemize}
