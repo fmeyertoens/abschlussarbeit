@@ -4,7 +4,8 @@ Für den Vergleich der beiden API Ansätze wurde eine Single-Page Anwendung mit 
 Als Datenquelle dient zum einen eine MongoDB Datenbank, sowie Dateien im JSON Format.
 Durch die Verteilung der jeweiligen Softwarekomponenten auf physikalisch unterschiedliche Rechner, lassen sich mehrere Anwendungsfälle abbilden.
 So wurden die Clientanwendung, die Serveranwendungen und die Datenbank in verschiedenen Kombinationen lokal und von Cloudumgebungen (Azure, Heroku, MongoDB Atlas) gehostet und ausgeführt.
-Die JSON Dateien als Alternative zur Datenbank ermöglichen es die Cloudanwendung nicht unnötig zu belasten und den durch Datenbankabfragen entstehenden Overhead auf die deutlich schnellere Dateilesezeit zu minimieren.
+Die JSON Dateien als Alternative zur Datenbank ermöglichen es das Kontingent der Clouddatenbank nicht unnötig zu belasten und den durch Datenbankabfragen entstehenden Overhead auf die deutlich schnellere Dateilesezeit zu minimieren.
+Bei den Messungen wurde auf das Angleichen der Testbedingungen geachtet, besonders die im Zusammenhang mit Clouddiensten gemessenen Werte sind jedoch stark von der Tageszeit und der unbekannten Belastung des Dienstes abhängig.
 \begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{../Kapitel/Grafiken/netzwerk.png}
@@ -144,7 +145,42 @@ Für Feldargumente und Input Typen existiert zur Zeit noch keine Möglichkeit di
 Ein GraphQL Server stellt ein Schema und damit alle darin enthaltenen Abfragen unter einer URI bereit.
 Ergibt sich die Notwendigkeit eine neue Version unter einer anderen URI zu veröffentlichen, so können Abfragen die Schemata nicht verbinden und werden vom Server nur im Kontext eines Schemas ausgewertet.
 \section{Performance}
-
+Zum Vergleich der Abfrageperformance von GraphQL und REST wurden jeweils nacheinander eine Reihe von Abfragen durchgeführt und gemessen, um die Charakteristik der Daten zu erforschen.
+Die kostenfreie Laufzeitumgebung von Heroku (Dyno) unterliegt einem monatlichen Stundenlimit und wird nach 30 Minuten, in denen keine Anfragen gestellt werden, in den Schlafzustand versetzt.
+Erhält eine schlafende Dyno eine Anfrage, so wird sie nach einer kurzen Verzögerung wieder aktiv. TODO Zitat Heroku
+Diese anfängliche Verzögerungszeit ist nach der angegebenen 30 minütigen Pause, in geringerem Maße aber auch nach nur wenigen Sekunden Inaktivität zu beobachten.\ref{img:abfrage-zeitverlauf}
+Diese anfänglichen Ausreißer sind unabhängig von der verwendeten API, wurden aber aufgrund der hohen Schwankungen in den weiteren Untersuchungen nicht einbezogen. 
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\linewidth]{../Kapitel/Grafiken/abfragen-zeitverlauf.png}
+  \caption{Abfragen im Zeitverlauf}
+  \label{img:abfrage-zeitverlauf}
+\end{figure}
+Je nach für die Abfrage verwendetem Gerät unterscheiden sich die Abfragezeiten deutlich.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\linewidth]{../Kapitel/Grafiken/abfrage-gerät.png}
+  \caption{Abfragen nach Gerät}
+  \label{img:abfrage-gerät}
+\end{figure}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\linewidth]{../Kapitel/Grafiken/parsing-gerät.png}
+  \caption{Testumgebung}
+  \label{img:REST-diss}
+\end{figure}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\linewidth]{../Kapitel/Grafiken/performance-szenario.png}
+  \caption{Testumgebung}
+  \label{img:REST-diss}
+\end{figure}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\linewidth]{../Kapitel/Grafiken/performance-diff.png}
+  \caption{Testumgebung}
+  \label{img:REST-diss}
+\end{figure}
 
 \section{Datenaufkommen/Netzwerklast}
 \begin{itemize}
