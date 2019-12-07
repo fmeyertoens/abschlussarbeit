@@ -17,6 +17,7 @@
 
 % Bilder
 \usepackage{graphicx}
+\graphicspath{{../Kapitel/Grafiken/}}
 
 % Tabellen
 \usepackage{booktabs}
@@ -45,6 +46,9 @@ headsep=12.5mm, footskip=12.5mm}
   sorting=nyt,
   backend=biber]{biblatex}
 \addbibresource{sources.bib}
+\DefineBibliographyStrings{ngerman}{
+  urlseen = {Abruf am}
+}
 
 % automatische Verlinkung
 \usepackage{hyperref}
