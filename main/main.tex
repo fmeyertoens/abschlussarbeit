@@ -1,4 +1,9 @@
-\documentclass[fontsize=11pt,paper=a4,toc=listof,bibliography=toc]{scrbook}
+\documentclass[fontsize=12pt,paper=a4,toc=listof,bibliography=toc]{scrbook}
+
+% Quellcode
+\usepackage{minted}
+% Kompatibilität mit scrbook
+\usepackage{scrhack}
 
 % deutsche Umlaute
 % \usepackage{lmodern}
@@ -10,9 +15,6 @@
 \usepackage[english,ngerman]{babel}
 \usepackage[autostyle]{csquotes}
 
-% automatische Verlinkung
-\usepackage{hyperref}
-
 % Bilder
 \usepackage{graphicx}
 
@@ -20,12 +22,39 @@
 \usepackage{booktabs}
 \usepackage{tabularx}
 \newcolumntype{Y}{>{\centering\arraybackslash}X}
+% mit mehreren Zeilen
+\usepackage{array}
+
+% Setzen der Seitenabstände
+\usepackage{geometry}
+\geometry{a4paper, top=30mm, left=40mm, right=20mm, bottom=30mm,
+headsep=12.5mm, footskip=12.5mm}
+
+% leeres Endblatt
+\usepackage{afterpage}
+\newcommand\blankpage{
+  \null{}
+  \thispagestyle{empty}
+  \addtocounter{page}{-1}
+  \newpage
+}
 
 % biblatex
 \usepackage[
   style=ieee,
+  sorting=nyt,
   backend=biber]{biblatex}
 \addbibresource{sources.bib}
+
+% automatische Verlinkung
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
 
 \newcommand{\zB}{z.~B.\@}
 
@@ -37,7 +66,11 @@
 \frontmatter
 \input{../Kapitel/Deckblatt.tex}
 
+\cleardoubleoddpage{}
+\pagenumbering{Roman}
 \tableofcontents \listoffigures \listoftables
+\cleardoubleoddpage{}
+\pagenumbering{arabic}
 
 \mainmatter{}
 \input{../Kapitel/kapitel1.tex}
@@ -51,5 +84,7 @@
 \printbibliography[title=Literaturverzeichnis]
 
 \input{../Selbständigkeitserklärung/selbständigkeitserklärung.tex}
+
+\afterpage{\blankpage}
 
 \end{document}
