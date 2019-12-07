@@ -1,4 +1,4 @@
-\documentclass[fontsize=12pt,paper=a4,toc=listof,bibliography=toc]{scrbook}
+\documentclass[fontsize=12pt,paper=a4,toc=listof,bibliography=toc,headings=small]{scrbook}
 
 % Quellcode
 \usepackage{minted}
@@ -31,6 +31,11 @@
 \geometry{a4paper, top=30mm, left=40mm, right=20mm, bottom=30mm,
 headsep=12.5mm, footskip=12.5mm}
 
+% kleinerer Abstand vor Kapitelüberschrift
+\RedeclareSectionCommand[
+  beforeskip=24pt
+]{chapter}
+
 % leeres Endblatt
 \usepackage{afterpage}
 \newcommand\blankpage{
@@ -59,6 +64,9 @@ headsep=12.5mm, footskip=12.5mm}
     linkcolor=black,
     urlcolor=black
 }
+
+% Layoutboxen anzeigen
+% \usepackage{showframe}
 
 \newcommand{\zB}{z.~B.\@}
 

@@ -1,59 +1,39 @@
 \chapter{Vorbetrachtungen}
 \section{Client-Server Architektur}
-\begin{itemize}
-  \item Client-Server ist ein verteiltes System
-  \item Zwischen Client und Server geschieht Nachrichtenaustausch
-  \item Client fordert eine Operation vom Server an. Server sendet Resultat der Operation an den Client zurück.
-  \item Client initiiert die Interaktion. Server reagiert.
-  \item Mehrere Clients können den gleichen Server nutzen. Abbildung aus `Grundkurs verteilte Systeme'!
-  \item Client kann mehrere Server benutzen. Server kann in anderer Interaktion selbst zum Client/Vermittler werden.
-  \item Vorteile
-    \begin{itemize}
-      \item getrennte Entwicklung
-      \item unabhängige Ausfälle
-      \item Festgelegte Rollenverteilung: Client ist Konsument. Server ist Produzent.
-    \end{itemize}
-  \item Herausforderung: einheitliches Kommunikationsprotokoll
-\end{itemize}
 Die Basis für die meisten Anwendungen im Web bildet die Client-Server Architektur.
 Der Nachrichtenaustausch in einem verteilten System wird dabei auf zwei Akteure und eine Interaktion fokussiert.
 Der Client initiiert die Interaktion, indem er eine Nachricht an den Server sendet.
 Der Server reagiert, indem er mit dem Resultat der Auswertung der Nachricht antwortet.
-Ein Client kann mit mehreren Servern in Interaktion treten und mehrere Clients können mit dem gleichen Server kommunizieren.
+Ein Client kann mit mehreren Servern in Interaktion treten und mehrere Clients können mit dem gleichen Server kommunizieren, wie in Abbildung~\ref{img:client-server} dargestellt.
 Durch die Anfrage werden die Rollen von Client und Server festgelegt, welche jedoch nur für die Dauer der Interaktion gelten.
 So kann ein Akteur, der bei einem Nachrichtenaustausch als Server angefragt wird, während eines anderen selbst als Client die Kommunikation beginnen.
-Bedingung für die Client-Server Architektur ist, dass dem Client zu Beginn der Kommunikation, der Server bekannt ist und dass beide das gleiche Kommunikationsprotokoll unterstützen.
+Bedingungen für die Client-Server Architektur sind, dass dem Client zu Beginn der Kommunikation der Server bekannt ist und dass beide das gleiche Kommunikationsprotokoll unterstützen.
+\begin{figure}[h]
+  \centering
+  \fbox{\includegraphics[width=10cm]{client-server.png}}
+  \caption{Mehrere Clients treten mit verschiedenen Servertypen in Interaktion, in Anlehnung an~\cite[23]{Bengel}}\label{img:client-server}
+\end{figure}
 \par
-Die Entwicklung einer Anwendung nach dieser Architektur hat ein erklärtes Ziel und Hauptvorteil: Die Trennung der Verantwortlichkeiten.\cite[vgl.][]{REST}
+Die Entwicklung einer Anwendung nach dieser Architektur hat ein erklärtes Ziel und Hauptvorteil: Die Trennung der Verantwortlichkeiten.\cite[vgl.][78]{REST}
 \par
 Client und Server sind logisch und oft auch physikalisch getrennte Teile einer Anwendung und können unabhängig voneinander entwickelt werden, solange sie ihre Kommunikationsschnittstelle wahren.
-Die damit verbundene Trennung der Verantwortlichkeiten führt zu einer Reduzierung der Komplexität der einzelnen Anwendungen.
+Die damit verbundene Trennung der Verantwortlichkeiten führt zu einer Reduzierung der Komplexität der einzelnen Anwendungsteile.
 Da Client und Server unabhängig voneinander ausgeführt werden, beeinflusst der Ausfall des einen nicht die Stabilität des anderen.
 Wird der Client als Benutzeroberfläche und der Server als Datenspeicher genutzt, so können beispielsweise mehrere Clients für verschiedene Geräte oder Anwendungsfälle entwickelt und optimiert werden, wodurch die Portabilität der Oberfläche verbessert wird.
 Die Verteilung auf mehrere Geräte erhöht außerdem die Skalierbarkeit des Gesamtsystems.
 
 \section{Web APIs}
-\begin{itemize}
-  \item API bezeichnet Application Programming Interface
-  \item Grundsatz ist die Kommunikation zweier Programme zur Konsumierung von anderem Quellcode, Abstraktion und Verstecken von Implementierungsdetails und Komplexität.
-  \item Frameworks und Bibliotheken vieler Programmiersprachen bieten oft benötigte Funktionalität. Kommunikation besteht aus Aufruf mit Parametern und Antwort mit Ergebnis.
-  \item Die Arbeit beschäftigt sich nur mit API von verteilten Systemen.
-  \item Hauptaugenmerk auf Systemen mit Fat-Client. Großer Teil der Anwendungslogik auf Clientseite. Server dient als Datenspeicher. Hauptinteraktionen mit CRUD (Create, Read, Update, Delete)
-  \item Popularität von Cloudservices und öffentlichen APIs bzw. Interaktion mit externen Services
-\end{itemize}
 Eine Software kann einen Teil seiner Funktionalität über Schnittstellen externen Programmen zur Verfügung stellen.
 Solche Application Programming Interfaces (API) ermöglichen die Kommunikation zwischen Programmen durch das parametrisierte Aufrufen der öffentlich gemachten Funktionen einerseits und das Antworten mit dem Ergebnis der Funktion andererseits.
-Das Verstecken der zugrundeliegenden Komplexität ist ein großer Vorteil der Verwendung von APIs und führt zu Unabhängigkeit von Implementierungsdetails.
+Ein großer Vorteil der Verwendung von APIs ist das Verstecken der zugrundeliegenden Komplexität und führt zu Unabhängigkeit von Implementierungsdetails.
 So ist es z.B.\ die Aufgabe eines Betriebssystems, Programmen den Zugriff auf Hardwarekomponenten, wie Dateisystem, Netzwerk, Sensoren und Peripheriegeräte, zu abstrahieren und bereitzustellen.
 Externe Programme werden durch die Benutzung jedoch abhängig von der Schnittstelle, welche daher als Kommunikationsobjekt Vertragscharakter bekommt.
-Für die meisten Programmiersprachen existieren Programmbibliotheken, die zur Entwicklungszeit grundlegende und immerwieder benötigte Funktionalität bereitstellen, aber besonders Cloudservices und öffentliche APIs haben in den letzten Jahren an Popularität erlangt, da sie mit HTTP eine sprachunabhängige Schnittstelle bieten.
+Für die meisten Programmiersprachen existieren Programmbibliotheken und Frameworks, die zur Entwicklungszeit grundlegende und immer wieder benötigte Funktionalität bereitstellen, aber besonders Cloudservices und öffentliche APIs haben in den letzten Jahren an Popularität erlangt, da sie mit HTTP eine sprachunabhängige Schnittstelle bieten und die Integration von Anwendungs- und Nutzerdaten ermöglichen.
 Die vorliegende Arbeit beschränkt sich auf API von verteilten Systemen im Web.
-Web-Frameworks werden häufig auch als Fat-Client Anwendungen bezeichnet, da ein beträchtlicher Teil der Programmlogik, sowie die Benutzeroberfläche auf Clientseite ausgeführt wird.
+Webanwendungen auf Basis von JavaScript-Frameworks werden häufig auch als Fat-Client Anwendungen bezeichnet, da ein beträchtlicher Teil der Programmlogik, sowie die Benutzeroberfläche auf Clientseite ausgeführt wird.
 Da der Server in solchen Anwendungen als Zugangspunkt und Speicher für Daten dient, sind die APIs geprägt von der Übertragung der Daten zur Anzeige im Client und der Modifikation der Daten auf dem Server.
 Gemäß den Hauptinteraktionen werden diese APIs auch als CRUD (Create, Read, Update, Delete) APIs bezeichnet.
-
-\section{Abgrenzung zu anderen Web API Ansätzen}
+\subsubsection{Abgrenzung zu anderen Web API Ansätzen}
 \begin{itemize}
-  \item SOAP (Simple Object Access Protocol), XML basiert, nutzt nur POST
   \item RPC (Remote Procedure Call), Zentraler Punkt ist das Aufrufen von Anwendungslogik auf dem Server, nicht Datentransport.
 \end{itemize}

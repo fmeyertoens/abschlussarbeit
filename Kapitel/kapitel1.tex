@@ -1,7 +1,7 @@
 \chapter{Einleitung}
 
 \section{Motivation und Zielstellung}
-Das Internet (Netz, Web) und Web-Anwendungen unterliegen einem starken Wandel.
+Das Internet und Web-Anwendungen unterliegen einem starken Wandel.
 Die Kommerzialisierung, zunehmende Verbreitung und Erweiterung der Möglichkeiten haben zu einer veränderten Nutzung und Entwicklung von Internetanwendungen beigetragen.
 Vom Netzwerk zum Teilen von Hypertextdokumenten ist es zur Plattform/Medium (TODO) für alle Arten interaktiver betrieblicher und sozialer Software geworden.
 \par
@@ -9,7 +9,7 @@ Um der zunehmenden Größe, Komplexität und mangelnden Wartbarkeit der Anwendun
 Namentlich ist der Trend von sogenannter monolithischer zu service-orientierter Software zu beobachten.
 Verbesserungen in der Skriptausführung von Webbrowsern und die Weiterentwicklung von JavaScript selbst hatte außerdem zur Folge, dass immer mehr Teile der Programme auf dem Client ausgeführt werden.
 Zeuge dieser Entwicklung sind die vielen JavaScript Frameworks (z.B. Angular, React, Vue), welche besonders innerhalb der letzten 10 Jahre populär geworden sind und mittlerweile zum Standard der Webentwicklung gehören, sowie Projekte wie Electron und NativeScript, welche Webtechnologien nutzen, um native Anwendungen zu entwickeln~\cite[vgl.][]{SOsurvey}.
-Mit diesen Frameworks entwickelte Single Page Applications (SPA) generieren Ansichten und Dialoge auf Basis von Daten, welche über Web APIs mit dem Server ausgetauscht werden.
+Mit diesen Frameworks entwickelte Single Page Applications (SPA) generieren Ansichten und Dialoge auf Basis von Daten, welche über Web Application Programming Interfaces (API) mit dem Server ausgetauscht werden.
 Oft kommunizieren Anwendungen mit einer Vielzahl von Webservices, \zB{} um unternehmensinterne oder externe Datenquellen oder Dienste zu integrieren.
 \par
 Um eine einheitliche Kommunikationsschnittstelle für die Interaktion von Clientanwendungen und Webservices zu schaffen, werden APIs häufig nach dem Representational State Transfer Architekturkonzept (REST) entwickelt.
@@ -29,17 +29,11 @@ Die vorliegende Arbeit soll mehrere Fragen bezüglich der beiden Ansätze für b
 \end{enumerate}
 
 \section{Aufbau der Arbeit}
-\begin{itemize}
-  \item Betrachtung der Entwicklung von Web Anwendungen mit der Client-Server Architektur als Grundlage
-  \item Abgrenzung des Begriffes API und Differenzierung von anderen API Ansätzen
-  \item Das REST Architekturkonzept als Grundlage für das Web und APIs
-  \item GraphQL als Alternative, seine Funktionsweise
-  \item Vergleich von REST und GraphQL
-  \item Welchen klassischen Problemen müssen sich API Entwickler stellen?
-  \item Welche Probleme von REST löst GraphQL\@?
-  \item Welche Vorteile hat REST gegenüber GraphQL\@?
-  \item Vorstellung einer Auswahl von Tools und Bibliotheken, die verschiedene Probleme von REST und GraphQL lösen bzw.\ die Entwicklung vereinfachen.
-  \item Untersuchung der Kompatibilität von Bibliotheken
-  \item Tests von REST und GraphQL in verschiedenen Szenarien.
-  \item Kombinierter Einsatz von GraphQL und REST
-\end{itemize}
+Um die API Ansätze REST und GraphQL zu vergleichen soll zunächst die zugrundeliegende Client-Server Architektur betrachtet werden.
+Weiterhin muss der Begriff des Application Programming Interface (API) allgemein und speziell im Zusammenhang mit dem Web definiert werden.
+Die REST Architektur stellt seit ihrer Erklärung im Jahr 2000 die Grundlage für viele Webanwendungen und APIs dar, wurde aber über die Jahre verschieden interpretiert und standardisiert.
+Erst 2015 wurde GraphQL als Alternative veröffentlicht.
+Die Grundgedanken beider Ansätze und ihre Implementierung werden daher nach ihrer chronologischen Reihenfolge untersucht.
+Anschließend soll im Vergleich festgestellt werden, wie die Technologien die klassischen Probleme bei der API Entwicklung lösen und welche Vorteile und Probleme erkennbar sind.
+Zum praktischen Vergleich wurde eine Single-Page Anwendung und jeweils eine REST- und GraphQL-Serveranwendung entwickelt, mit denen verschiedene API Szenarien dargestellt und die Performance gemessen werden kann.
+Aus diesen Ergebnissen sollen die zuvor genannten Forschungsfragen beantwortet werden, bevor abschließen auch auf den kombinierten Einsatz der beiden Technologien eingegangen wird.
