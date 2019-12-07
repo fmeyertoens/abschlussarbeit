@@ -19,6 +19,7 @@
 % Tabellen
 \usepackage{booktabs}
 \usepackage{tabularx}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
 
 % biblatex
 \usepackage[
@@ -38,7 +39,7 @@
 
 \tableofcontents \listoffigures \listoftables
 
-\mainmatter
+\mainmatter{}
 \input{../Kapitel/kapitel1.tex}
 \input{../Kapitel/kapitel2.tex}
 \input{../Kapitel/kapitel3.tex}
@@ -48,5 +49,7 @@
 \input{../Kapitel/kapitel7.tex}
 
 \printbibliography[title=Literaturverzeichnis]
+
+\input{../Selbständigkeitserklärung/selbständigkeitserklärung.tex}
 
 \end{document}

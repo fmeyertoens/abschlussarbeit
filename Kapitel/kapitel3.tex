@@ -12,7 +12,7 @@ Die Ziele und Vorteile der REST Architektur lassen sich folgendermaßen zusammen
 Diese Ziele werden erreicht durch eine Reihe von Anforderungen.
 \subsubsection{Komponenten und Prinzipien}
 Die REST Architektur baut auf der weit verbreiteten Client-Server Architektur auf und definiert den Begriff der Ressource als Abstraktion für jede Art von Information, die Ziel einer Client-Anfrage ist.\cite[vgl.][88f.]{REST}
-Als Beispiele für Ressourcen nennt Fielding selbst: \textcquote[88]{REST}{a document or image, a temporal service [\dots], a collection of other resources, a non-virtual object (e.g. a person).}
+Als Beispiele für Ressourcen nennt Fielding selbst: \textcquote[88]{REST}{a document or image, a temporal service [\dots], a collection of other resources, a non-virtual object (e.g.\ a person).}
 Eine Ressource wird durch einen Bezeichner bekannt gemacht und ist damit für einen Client abrufbar.
 Der Bezeichner bleibt gleich, selbst wenn sich die damit identifizierte Ressource ändert.
 Die Kommunikation einer Ressource vom Server zum Client erfolgt über eine Repräsentation der Ressource, d.h.\ ein Datenformat, welches vom Server festgelegt, oder durch Content-Negotiation zwischen Client und Server ausgehandelt wird.
@@ -21,8 +21,7 @@ Die Antwort des Servers enthält die Daten der Repräsentation und deren Metadat
 Anfrage und Antwort enthalten außerdem Kontrolldaten, \zB{} HTTP Request Methods, Status Codes und Header, um die Bedeutung der Nachricht zu vermitteln.\cite[vgl.][90f.]{REST}
 \begin{table}[h!]
   \begin{center}
-    \caption{REST Data Elements}
-    \label{tab:REST Data Elemens}
+    \caption{REST Data Elements}\label{tab:REST Data Elemens}
     \begin{tabularx}{\textwidth}{XXX}
       \toprule
       \textbf{Data Element} & \textbf{Web Equivalent} & \textbf{Example}\\
@@ -81,13 +80,12 @@ Die so verbesserte Skalierbarkeit des Servers bringt jedoch mehr Datenverarbeitu
 \begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{../Kapitel/Grafiken/REST-process-view.png}
-  \caption{REST \cite[84]{REST}}
-  \label{img:REST-diss}
+  \caption{REST~\cite[84]{REST}}\label{img:REST-diss}
 \end{figure}
 
 \section{Implementierung von RESTful APIs}
 Die REST Architektur ist generell protokollunabhängig, durch die Arbeit von Fielding an HTTP und URI sind diese jedoch sehr geeignet für die Implementierung und waren auch das erste Anwendungsfeld.\cite[vgl.][109,116]{REST}
-Eine API, die dem REST Archtekturstil folgt, wird RESTful genannt.
+Eine API, die dem REST Architekturstil folgt, wird RESTful genannt.
 Da die Dissertation von Fielding jedoch einige Implementierungsdetails schuldig bleibt bzw.\ bewusst \textcquote[86]{REST}{Details der Komponentenimplementierung und Protokollsyntax [ignoriert]}, wurde der Begriff RESTful API mit der Zeit aufgeweicht und für APIs verwendet, die grundlegende Anforderungen nicht erfüllen.\cite[vgl.][]{fieldBlog}
 \par
 \begin{itemize}
