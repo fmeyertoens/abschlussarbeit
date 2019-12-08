@@ -2,6 +2,7 @@
 
 % Quellcode
 \usepackage{minted}
+\usemintedstyle{perldoc}
 % Kompatibilität mit scrbook
 \usepackage{scrhack}
 
@@ -18,6 +19,9 @@
 % Bilder
 \usepackage{graphicx}
 \graphicspath{{../Kapitel/Grafiken/}}
+
+% exakte Platzierung von Grafiken
+\usepackage{float}
 
 % Tabellen
 \usepackage{booktabs}
@@ -95,6 +99,7 @@ headsep=12.5mm, footskip=12.5mm}
 
 \printbibliography[title=Literaturverzeichnis]
 
+\input{../Anlagen/anlagen.tex}
 \input{../Selbständigkeitserklärung/selbständigkeitserklärung.tex}
 
 \afterpage{\blankpage}

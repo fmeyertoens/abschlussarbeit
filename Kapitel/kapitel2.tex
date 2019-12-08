@@ -34,6 +34,9 @@ Webanwendungen auf Basis von JavaScript-Frameworks werden häufig auch als Fat-C
 Da der Server in solchen Anwendungen als Zugangspunkt und Speicher für Daten dient, sind die APIs geprägt von der Übertragung der Daten zur Anzeige im Client und der Modifikation der Daten auf dem Server.
 Gemäß den Hauptinteraktionen werden diese APIs auch als CRUD (Create, Read, Update, Delete) APIs bezeichnet.
 \subsubsection{Abgrenzung zu anderen Web API Ansätzen}
-\begin{itemize}
-  \item RPC (Remote Procedure Call), Zentraler Punkt ist das Aufrufen von Anwendungslogik auf dem Server, nicht Datentransport.
-\end{itemize}
+Neben REST und GraphQL existieren weitere API-Technologien auf Basis der Client-Server-Architektur wie das Simple Object Access Protocol (SOAP) und Remote Procedure Call (RPC).
+SOAP verwendet XML zur Kommunikation, welches an vielen Stellen durch das leichtgewichtigere JSON abgelöst wurde.
+Ziel einer RPC-Kommunikation ist das Aufrufen einer Aktion auf dem Server, wobei die Orientierung an Funktionsnamen zu einer engen Kopplung von Client und Server führt.
+Die Namensgebung der Funktionen erfordert außerdem Dokumentation und Richtlinien, um einen Überblick über bestehende Funktionen zu erhalten und die Zahl derselben nicht unnötig zu vergrößern und damit die Komplexität der API zu erhöhen.
+RPC ist aufgrund seiner leichtgewichtigen Nachrichten für Anwendungen mit hohen Performanceansprüchen oder befehlorientierte APIs geeignet~\cite[vgl.]{Barbettini}.
+Beide Technologien finden jedoch in der Entwicklung von Single-Page-Apps kaum Verwendung und sollen daher im Folgenden nicht weiter betrachtet werden.

@@ -64,17 +64,17 @@ Oftmals ist bei der Entwicklung von Clientanwendungen die erforderliche Datenstr
 Dazu gibt es verschiedene Ansätze, wie der Query-String einer URI genutzt werden kann, um in Beziehung stehende Daten mit einem einzigen Request von einem Endpunkt zu erhalten.
 Weder REST noch HTTP spezifizieren Syntax und Semantik des Query Strings bzw.\ betrachten diese als Implementierungsdetail.
 Query-Parameter und Matrixparameter werden häufig gebraucht, um die Möglichkeiten von Abfragesprachen für REST zu implementieren.
-Sie ermöglichen \zB{} die gewünschten Felder des angefragten Objektes, ein Feld nach dem sortiert, oder ein Feld und Wert nach dem gefiltert werden soll, anzugeben.
+Sie ermöglichen \zB{} die gewünschten Felder des angefragten Objektes, ein Feld nach dem sortiert oder ein Feld und Wert nach dem gefiltert werden soll, anzugeben.
 Somit können Clientanwendungen die Antwort je nach ihren Anforderungen besser beeinflussen.
 Abhängig davon wie unterschiedlich diese sind, muss die Entscheidung über die Erweiterung der Parameteroptionen oder das Einführen eines separaten Endpunktes getroffen werden.
 Über sogenannte \enquote{includes} lassen sich bei JSON:API verbundene Objekte in die Antwort einbeziehen.
 Includes oder sind außerdem eine effektive Lösung für das N+1 Problem.
 Diese speziellen Auswertungen des Query-Strings müssen durch den REST Server angeboten werden und sind aus Entwurfssicht ein Tausch von erhöhter Abfragekomplexität und Clientflexibilität gegen Serverperformance.
 \par
-Da GraphQL für die Übertragung von Daten in Textform konzipiert wurde, müssen Informationen als Text vorliegen, oder serialisiert werden.
+Da GraphQL für die Übertragung von Daten in Textform konzipiert wurde, müssen Informationen als Text vorliegen oder serialisiert werden.
 Das kann besonders beim Hochladen von Binärdaten, wie Audio- oder Videodateien, zu sehr großen Datenmengen führen.
 Eine REST API kann Binärdaten mit dem MediaType \enquote{multipart/form-data} empfangen und verarbeiten.
-Für eine GraphQL API muss entweder ein Dateiupload-Service vorgeschaltet sein und nur der Link übertragen, oder eine Bibliothek, wie \enquote{graphql-upload}, verwendet werden.
+Für eine GraphQL API muss entweder ein Dateiupload-Service vorgeschaltet sein und nur der Link übertragen oder eine Bibliothek, wie \enquote{graphql-upload}, verwendet werden.
 
 \section{Weiterentwicklung und Versionierung}
 \begin{itemize}
@@ -100,12 +100,12 @@ Für eine GraphQL API muss entweder ein Dateiupload-Service vorgeschaltet sein u
 \par 
 Langlebige Software befindet sich in ständiger Entwicklung.
 Ein Server muss auf Veränderungen des der API zugrunde liegenden Datenmodells reagieren können und diese gegebenenfalls Clients zugänglich machen.
-Neue Anforderungen an die API erfordern das Erweitern der Abfragemöglichkeiten, oder das Verringern derselben, wenn alte Funktionalität nicht mehr unterstützt oder durch neue ersetzt werden soll.
+Neue Anforderungen an die API erfordern das Erweitern der Abfragemöglichkeiten das Verringern derselben, wenn alte Funktionalität nicht mehr unterstützt oder durch neue ersetzt werden soll.
 Da jede API einen Vertrag zwischen Server und Client darstellt, sollten Veränderungen einem festgelegten Ablauf und Kommunikationskanal folgen, um sukzessive Migration zu gewährleisten und Abfragefehler zu vermeiden.
 Zu diesem Zweck wird in der Softwareentwicklung häufig Versionierung verwendet, bei der durch eine Zahl oder Zahlenkombination ein bestimmter Stand der Software bereitgestellt oder abgefragt wird.
 \par
 Um eine REST API um zusätzliche Ressourcen zu erweitern, ist keine Versionierung notwendig.
-Stattdessen wird ein neuer Endpunkt hinzugefügt und über die Verlinkung von anderen Ressourcen, oder als Einstiegspunkt in der Dokumentation bekanntgemacht.
+Stattdessen wird ein neuer Endpunkt hinzugefügt und über die Verlinkung von anderen Ressourcen oder als Einstiegspunkt in der Dokumentation bekanntgemacht.
 Eine API Clientanwendung sollte so entwickelt werden, dass eine Antwort ausgewertet werden kann, solange sie semantisch eindeutig verständlich ist (Postel'sches Gesetz).
 Das Umordnen und Hinzufügen von Elementen innerhalb einer Antwort sollte somit nicht zu Fehlern führen und die Validierung demgegenüber tolerant sein.
 Normalerweise muss erst versioniert werden, wenn keine Rückwärtskompatibilität mehr gewährleistet werden kann.
@@ -156,6 +156,23 @@ Diese anfänglichen Ausreißer sind unabhängig von der verwendeten API, wurden 
   \caption{Abfragen im Zeitverlauf}\label{img:abfrage-zeitverlauf}
 \end{figure}
 Je nach für die Abfrage verwendetem Gerät unterscheiden sich die Abfragezeiten deutlich.
+\begin{figure}[h]
+  \centering
+  \begin{minted}[
+    linenos,
+    numbersep=0pt,
+    gobble=1,
+    frame=lines,
+    framesep=4mm
+  ]{typescript}
+    const startTime = performance.now();
+    const response = await fetch('http://localhost:5000/events');
+    const received = performance.now() - startTime;
+    const data = await response.json();
+    const parsed = performance.now() - startTime;
+  \end{minted}
+  \caption{Messung von Received- und Parsed-Zeit, Vereinfachte Darstellung aus \emph{EventFetch.vue} Z.~92f.}\label{Test}
+\end{figure}
 \begin{figure}[h!]
   \centering
   \includegraphics[width=\linewidth]{abfrage-gerät2.png}
