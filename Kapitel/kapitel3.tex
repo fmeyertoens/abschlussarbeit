@@ -92,6 +92,7 @@ Eine API, die dem REST Architekturstil folgt, wird RESTful genannt.
 Da die Dissertation von Fielding jedoch einige Implementierungsdetails schuldig bleibt bzw.\ bewusst \textcquote[86]{REST}{Details der Komponentenimplementierung und Protokollsyntax [ignoriert]}, wurde der Begriff RESTful API mit der Zeit aufgeweicht und für APIs verwendet, die grundlegende Anforderungen nicht erfüllen.\cite[vgl.][]{fieldBlog}
 Die REST Architektur ist generell protokollunabhängig, obwohl durch die Arbeit von Fielding an HTTP und URI diese für die Implementierung sehr geeignet sind und auch das erste Anwendungsfeld waren~\cite[vgl.][109,116]{REST}.
 Laut Richardson enthalten die Webstandards URI, HTTP und HTML die Randbedingungen der REST-Architektur, sodass eine API dieselben nur richtig gebrauchen muss, um als RESTful zu gelten~\cite[vgl.][]{Richardson}.
+
 \subsubsection{Richardson Maturity Model}
 Richardson beschreibt vier Level, um Webservices qualitativ zu klassifizieren und ihre Konformität zum REST-Architekturstil auszudrücken~\cite[vgl.][]{Desrosiers}.
 Im Folgenden sind HTTP Anfragen bzw. Antworten exemplarisch und vereinfacht dargestellt.
@@ -183,17 +184,55 @@ Die Frage, wann eine API als RESTful bezeichnet werden kann, beantwortet es jedo
 Mit Sicherheit kann man sagen, dass eine API auf Level 0 keine REST-API ist und Fowler schreibt sogar, dass Level 3 eine Voraussetzung für REST ist~\cite[vgl.][]{Fowler}.
 Deutlich wird, dass jedes Level ein anderes Problem löst, doch nicht jede API vor jedem dieser Probleme steht.
 So könnte eine automatisch generierte API Dokumentation mit \emph{Swagger}\cite{Swagger} eine Alternative zur Selbstdokumentation durch Hypermedia (Level 3) sein.
+
 \subsubsection{Repräsentationsformate und Query String Erweiterungen}
-\begin{itemize}
-  \item REST bestimmt nicht welches Format benutzt werden muss.
-  \item Kein REST Standard
-  \item REST APIs nutzen Web Standards (HTTP, URI, Hypermedia)
-  \item standardisierung ermöglicht Bibliotheken und generische Clients
-  \item XML und HTML zur direkten Anzeige geeignet. JSON beliebter geworden, das leichter für Menschen und Maschinen zu lesen
-  \item verschiedene Ansätze um Struktur von JSON Dokumenten zur Verwendung in APIs zu definieren. Teilweise miteinander verwendbar (definieren verschiedene Aspekte der Kommunikation)
-  \item OpenAPI
-  \item JSON:API
-  \item Abbildung Beispiel Request und Response
-  \item Datenformat ist entscheidend. Bestimmte Formate haben native Unterstützung für Links und Forms (HTML, ATOM)
-  \item Media Type bestimmt Auswertung (und Anzeige) der Antwort. JSON, XML können genutzt werden. Client benötigt Informationen über Datenstruktur, um Links in diesen Dokumenten auszuwerten.
-\end{itemize}
+REST gebietet die Übertragung von Daten mit Hypermedia-Formaten, deren Verständnis für die Kommunikation von Client und Server essenziell ist.
+Es gibt einige Formate, wie HTML und ATOM~\cite{RFC5023}, welche weit verbreitet sind und Unterstützung für Hypermedia-Elemente wie Links mitbringen.
+Mit dem vermehrten Einsatz von JavaScript in Webanwendungen ist jedoch die JavaScript Object Notation (JSON)~\cite{RFC8259} immer beliebter geworden, sodass für die meisten Programmiersprachen mittlerweile Bibliotheken zum Serialisieren und Parsen des JSON-Formats existieren.
+Während HTML von Browsern verstanden und angezeigt werden kann, ist JSON sehr viel leichtgewichtiger und leichter lesbar.
+JSON definiert nur wenige Datentypen und enthält \textcquote[89]{Tilkov}{keine standardisierte Darstellung von Links, was primär daran liegt, dass für Links kein spezieller Datentyp in JavaScript existiert.}
+Um die Probleme bei der Entwicklung von APIs mit JSON zu bewältigen wurden über die Zeit verschiedene Spezialisierungen ausgearbeitet.
+So definieren die Hypertext Application Language (HAL)~\cite{HAL} und JSON-LD~\cite{JSON-LD} eine Semantik für Verlinkungen und Einbeziehen zugehöriger Daten in JSON und JSON Schema~\cite{JSON-Schema} ermöglicht das Validieren von JSON-Dokumenten.
+Die OpenAPI~\cite{OpenAPI} und JSON:API~\cite{JSON:API} Spezifikationen gehen noch weiter und beschreiben sowohl Abfragesyntax im Query String der URI, als auch die Struktur und Semantik der Antwort.
+Eine JSON:API-Abfrage und Antwort könnte folgendermaßen aussehen:
+\begin{figure}[h]
+  \centering
+  \begin{minted}{http}
+    GET /customers/2?include=car&fields[people]=name,age&fields[car]=brand HTTP/1.1
+    Accept: application/vnd.api+json
+  \end{minted}
+  \caption{Eine JSON:API Abfrage}\label{code:jsonApiReq}
+\end{figure}
+\begin{figure}[h]
+  \centering
+  \begin{minted}{http}
+    HTTP/1.1 200 OK
+    Content-Type: application/vnd.api+json
+  
+    {
+      "links": {
+        "self": "http://api.com/customers/2"
+      },
+      "data": [{
+        "type": "people",
+        "id": "2",
+        "attributes": {
+          "name": "Franz Meier",
+          "age": 34
+        }
+      }],
+      "included": [{
+        "type": "car",
+        "id": "48",
+        "attributes": {
+          "brand": "VW"
+        }
+      }]
+    }
+  \end{minted}
+  \caption{Die JSON:API Antwort zu~\ref{code:jsonApiReq}}\label{code:jsonApiRes}
+\end{figure}
+\par
+An diesem Beispiel wird deutlich, welche Möglichkeiten solche Spezifikationen bieten.
+Die Vorteile sind außerdem, dass allgemeine Bibliotheken und Anwendungen für APIs nach einer Spezifikation entwickelt und in Entwicklerwerkzeuge integriert werden können~\cite[vgl.][]{Postman}
+Je mehr Abfragelogik jedoch in den URI Query String verlagert wird, desto mehr Rechenarbeit muss der Server leisten, um die Antwort zu erzeugen und HTTP Caching kann aufgrund der speziellen Antwort weniger genutzt werden.
