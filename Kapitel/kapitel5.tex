@@ -158,20 +158,14 @@ Diese anfänglichen Ausreißer sind unabhängig von der verwendeten API, wurden 
 Je nach für die Abfrage verwendetem Gerät unterscheiden sich die Abfragezeiten deutlich.
 \begin{figure}[h]
   \centering
-  \begin{minted}[
-    linenos,
-    numbersep=0pt,
-    gobble=1,
-    frame=lines,
-    framesep=4mm
-  ]{typescript}
+  \begin{minted}{typescript}
     const startTime = performance.now();
     const response = await fetch('http://localhost:5000/events');
     const received = performance.now() - startTime;
     const data = await response.json();
     const parsed = performance.now() - startTime;
   \end{minted}
-  \caption{Messung von Received- und Parsed-Zeit, Vereinfachte Darstellung aus \emph{EventFetch.vue} Z.~92f.}\label{Test}
+  \caption{Messung von Received- und Parsed-Zeit, Vereinfachte Darstellung aus \emph{EventFetch.vue} Z.~92f.}\label{code:measuring}
 \end{figure}
 \begin{figure}[h!]
   \centering

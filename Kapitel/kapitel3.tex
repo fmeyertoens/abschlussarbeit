@@ -3,7 +3,7 @@
 Das Architekturkonzept des Representational State Transfer wurde erstmals im Jahr 2000 von Roy T. Fielding erwähnt, definiert und mit dem Akronym REST bezeichnet.\cite[76]{REST}
 Es enthält eine Reihe von Prinzipien für die Entwicklung von verteilten Systemen im Web mit besonderem Fokus auf den Schnittstellen zwischen den einzelnen Komponenten.
 Dabei baut REST auf der Client-Server-Architektur auf und hatte durch die Arbeit vib Fielding in den HTTP- und URI-Arbeitsgruppen direkten Einfluss auf die Entwicklung von der beiden Standards, wodurch jene Schnittstellen im Web definiert werden.\cite[vgl.][4,105f.]{REST}
-REST beschreibt größtenteils die Architektur des Web selbst und ist daher nicht auf APIs ausgelegt oder beschränkt.
+REST beschreibt größtenteils die Architektur des Web selbst und ist daher nicht auf APIs ausgelegt oder beschränkt\cite[vgl.][1]{Tilkov}.
 
 \section{Grundlagen}
 \subsubsection{Ziele von REST}
@@ -19,7 +19,7 @@ Die Kommunikation einer Ressource vom Server zum Client erfolgt über eine Repr�
 Somit bleibt der Ursprung der Daten hinter der Serverschnittstelle versteckt.
 Die Antwort des Servers enthält die Daten der Repräsentation und deren Metadaten.
 Anfrage und Antwort enthalten außerdem Kontrolldaten, \zB{} HTTP Request Methods, Status Codes und Header, um die Bedeutung der Nachricht zu vermitteln.\cite[vgl.][90f.]{REST}
-{\rowcolors{2}{white}{blue!30!white!70}}
+{\rowcolors{2}{white}{blue!30!white!70}
 \begin{table}[h!]
   \begin{center}
     \caption{REST Data Elements, in Anlehnung an~\cite[88]{REST}}\label{tab:REST Data Elemens}
@@ -34,6 +34,7 @@ Anfrage und Antwort enthalten außerdem Kontrolldaten, \zB{} HTTP Request Method
     \end{tabularx}
   \end{center}
 \end{table}
+}
 \par
 REST ist zustandslos, sodass jede Anfrage vom Client zum Server alle für deren Verarbeitung notwendigen Informationen beinhalten muss.
 Ein Client speichert gewöhnlich seinen Zustand, während auf Serverseite keine Zustandsinformationen über mehrere Anfragen hinweg gespeichert werden, wie es zum Beispiel bei Sessions der Fall ist.
@@ -67,11 +68,12 @@ REST beschreibt drei Typen von Komponenten:\cite[vgl.][96]{REST}
 Für die Schnittstellen der Komponenten gelten folgende Grundsätze:\cite[vgl.][82]{REST}
 \begin{itemize}
   \item Ressourcen müssen durch einen Bezeichner eindeutig identifizierbar sein.
+  Die URI für eine Ressource wird auch als Endpunkt bezeichnet.
   \item Die Interaktion mit einer Ressource, d.h.\ das Abfragen und Manipulieren derselben erfolgt über eine Repräsentation der Ressource.
   \item Nachrichten müssen so selbsterklärend sein, dass sie von der Schnittstelle verstanden und verarbeitet werden können.
   \item \foreigntextcquote{english}[82]{REST}{hypermedia as the engine of application state} (HATEOAS): Der Hypertext beschreibt den Zustand der Anwendung und die Möglichkeiten der Veränderung desselben.
   Folgt der Client einem Link im Hypertext und fordert eine neue Repräsentation an, so ändert er seinen Zustand.
-  Dieses Prinzip ist daher auch namensgebend für die Architektur des Representational State Transfer~\cite[vgl.][103f.]{TN_libero_mab21658382}.
+  Dieses Prinzip ist daher auch namensgebend für die Architektur des Representational State Transfer~\cite[vgl.][103f.]{SOA}.
 \end{itemize}
 \par
 Durch die generischen Client- und Serverschnittstellen, die selbstbeschreibenden Nachrichten und die zustandslose Kommunikation kann eine REST Anwendung leicht von Schichten profitieren.
@@ -92,42 +94,106 @@ Die REST Architektur ist generell protokollunabhängig, obwohl durch die Arbeit 
 Laut Richardson enthalten die Webstandards URI, HTTP und HTML die Randbedingungen der REST-Architektur, sodass eine API dieselben nur richtig gebrauchen muss, um als RESTful zu gelten~\cite[vgl.][]{Richardson}.
 \subsubsection{Richardson Maturity Model}
 Richardson beschreibt vier Level, um Webservices qualitativ zu klassifizieren und ihre Konformität zum REST-Architekturstil auszudrücken~\cite[vgl.][]{Desrosiers}.
-
-
-\begin{itemize}
-  \item Richardson Maturity Model ermöglicht Bestimmung wie REST konform Web service (API) ist
-  \item Level 0
-  \item Level 1
-  URI
-  \item Level 2
-  \begin{itemize}
-    \item HTTP Methoden genutzt als Kontrolldaten um Intention auszudrücken
-    \item CRUD Operationen werden abgedeckt
-    \item GET:\ Anfragen einer Repräsentation der Ressource
-    \item POST:\ kann zum Erstellen, Modifizieren und Löschen von Ressourcen verwendet werden, schlecht definiert; Funktionsweise in folgende Methoden aufgeteilt
-    \item PUT:\ Erstellen/Ersetzen einer Repräsentation
-    \item PATCH:\ Modifizieren einer Repräsentation
-    \item DELETE:\ Löschen der Ressource
-    \item GET, PUT, DELETE sind idempotent (gleiches Ergebnis bei mehrmaliger Ausführung). GET ist safe (kein Verändern der Ressource).
-  \end{itemize}
-  \item Level 3
-  \begin{itemize}
-    \item Hypermedia ermöglicht Navigation durch die API\@. Client ändert seinen Zustand, indem er URIs (Links) folgt (HATEOAS)
-    \item keine externe Dokumentation nötig. Links zwischen Dokumenten dokumentieren die Ressourcen
-    \item Datenformat ist entscheidend. Bestimmte Formate haben native Unterstützung für Links und Forms (HTML, ATOM)
-    \item Media Type bestimmt Auswertung (und Anzeige) der Antwort. JSON, XML können genutzt werden. Client benötigt Informationen über Datenstruktur, um Links in diesen Dokumenten auszuwerten.
-  \end{itemize}
-\end{itemize}
-
-\section{Verbreitung und Standardisierung}
+Im Folgenden sind HTTP Anfragen bzw. Antworten exemplarisch und vereinfacht dargestellt.
+\par
+Level 0 bezeichnet einen Webservice, bei der jede Interaktion mit der selben URI und HTTP Methode (HTTP Verb) erfolgt.
+Diese Methode ist zumeist \emph{POST} damit Daten sowohl empfangen, als auch gesendet werden können, ohne den Restriktionen des URI Query Strings zu unterliegen.
+Die Semantik einer Abfrage ist allein durch den Request Body ersichtlich, wodurch die automatische Verarbeitung durch Zwischenkomponenten erschwert wird.
+\par
+APIs in Level 1 teilen, im Vergleich zu Level 0, die Komplexität eines Endpunktes auf verschiedene Ressourcen auf und gebrauchen URIs um diese zu identifizieren.
+Ein Beispiel für eine öffentliche API dieser Art ist die Amazon Product Advertising API~\cite{Amzn}, welche man teilweise ausschließlich mit GET-Requests aufrufen kann.
+Das Strukturieren der API nach Ressourcen erlaubt eine getrennte Entwicklung der Endpunkte und Zwischenkomponenten, wie Load Balancer, können auf Anfragen leichter Einfluss nehmen.
+\begin{figure}[h]
+  \centering
+  \begin{minted}{http}
+    POST /customer/4/cart HTTP/1.1
+  
+    {
+      addProduct: {
+        id: 3
+      }
+    }
+  \end{minted}
+  \caption{Level 1 API POST Request}\label{code:lvl1}
+\end{figure}
+\par
+Level 2 erweitert die Verwendung von Webstandards um die von HTTP definierten Methoden und Response Status Codes.
+Jede HTTP Methode drückt eine bestimmte Intention aus und ist an semantische Beschränkungen gebunden~\cite[vgl.][21ff.]{HTTP}.
+{\rowcolors{2}{white}{blue!30!white!70}
+\begin{table}[h!]
+  \begin{center}
+    \caption{Bedeutung oft genutzter HTTP Methoden, in Anlehnung an~\cite[22]{HTTP}}\label{tab:HTTP Methods}
+    \begin{tabularx}{\linewidth}{m{0.25\linewidth}X}
+      \rowcolor{blue!40!white!50!black!10}\textbf{HTTP Methode} & \textbf{Bedeutung}\\
+      \midrule
+      GET & Anfragen der Repräsentation einer Ressource\\
+      POST & Bedeutung kann variieren. Zum Erstellen oder Modifizieren genutzt\\
+      PUT & Erstellt eine Ressource bzw.\ ersetzt eine vorhandene Repräsentation.\\
+      PATCH & Modifiziert eine vorhandene Repräsentation.\\
+      DELETE & Löscht eine Ressource\\
+    \end{tabularx}
+  \end{center}
+\end{table}
+}
+\par
+Die häufigsten Interaktionen mit Ressourcen werden durch diese Methoden beschrieben.
+Die zusätzlichen Eigenschaften geben Zwischenkomponenten weitere Möglichkeiten zur Optimierung~\cite[vgl.][]{Richardson}.
+Ein GET-Request ist als \emph{safe} definiert, d.h.\ dass die Ressource nicht verändert wird, sodass die Antwort bis zum Empfang eines verändernden Request gecacht werden kann.
+Die Idempotenz von GET, PUT und DELETE bedeutet, das bei mehrmaliger Ausführung des gleichen Requests der Zustand der Ressource gleich bleibt.
+Schlägt eine solche Anfrage fehl, was am Response Status Code erkennbar ist, kann diese ohne Nebeneffekte wiederholt werden.
+\begin{figure}[h]
+  \centering
+  \begin{minted}{http}
+    DELETE /events/1/booking/3 HTTP/1.1
+  \end{minted}
+  \caption{Level 2 DELETE Request}\label{code:lvl2}
+\end{figure}
+\par
+Der Grundgedanke von Level 3 und dem Einsatz von Hypermedia ist durch das Human Web, die Interaktion von Nutzern mit HTML Dokumenten im Webbrowser, inspiriert.
+Da der Browser Kenntnis von der Semantik von HTML hat, kann er im Dokument enthaltene Links als solche darstellen, sodass der Benutzer über die Links durch die Anwendung navigieren kann.
+Haben Clientanwendung und Server ein gemeinsames Hypermedia-Format, so können darin enthaltenen Links und Form-Elemente genutzt werden, um dem Client das Navigieren zu zugehörigen Daten und das Manipulieren der Repräsentation zu ermöglichen.
+Eine solche API ist damit selbstbeschreibend, benötigt keine externe Dokumentation und kann einige wenige Listenressourcen als Einstiegspunkte veröffentlichen, von denen aus alle weiteren Ressourcen über Links erreichbar sind~\cite[vgl.][78]{Tilkov}.
+Der Anwendungsfluss ist durch den Server steuerbar, \zB{} durch das Anbieten von Links zur nächsten oder vorherigen Ressource, wobei Client und Server entkoppelt bleiben durch das gemeinsame Verständnis des Hypermedia-Formats und URI~\cite[vgl.][]{Richardson}.
+So schreibt auch Fielding:
+\blockcquote{fieldBlog}{A REST API should spend almost all of its descriptive effort in defining the media type(s) used for representing resources and driving application state.}
+\begin{figure}[h]
+  \centering
+  \begin{minted}{http}
+    HTTP/1.1 200 OK
+  
+    {
+      book: {
+        id: 1,
+        title: "REST in practice",
+        author: "http://api.com/author/10",
+        coverImage: "http://api.com/books/1/cover.jpg",
+        reviews: "http://api.com/books/1/reviews?first=10",
+        relatedBooks: [
+          "http://api.com/books/14"
+        ],
+        next: "http://api.com/books/2",
+      }
+    }
+  \end{minted}
+  \caption{Level 3 Hypermedia JSON Response}\label{code:lvl3}
+\end{figure}
+\par
+Das Richardson Maturity Model erleichtert das Einschätzen der Konformität einer API zum REST Architekturstil.
+Die Frage, wann eine API als RESTful bezeichnet werden kann, beantwortet es jedoch nicht.
+Mit Sicherheit kann man sagen, dass eine API auf Level 0 keine REST-API ist und Fowler schreibt sogar, dass Level 3 eine Voraussetzung für REST ist~\cite[vgl.][]{Fowler}.
+Deutlich wird, dass jedes Level ein anderes Problem löst, doch nicht jede API vor jedem dieser Probleme steht.
+So könnte eine automatisch generierte API Dokumentation mit \emph{Swagger}\cite{Swagger} eine Alternative zur Selbstdokumentation durch Hypermedia (Level 3) sein.
+\subsubsection{Repräsentationsformate und Query String Erweiterungen}
 \begin{itemize}
   \item REST bestimmt nicht welches Format benutzt werden muss.
   \item Kein REST Standard
   \item REST APIs nutzen Web Standards (HTTP, URI, Hypermedia)
+  \item standardisierung ermöglicht Bibliotheken und generische Clients
   \item XML und HTML zur direkten Anzeige geeignet. JSON beliebter geworden, das leichter für Menschen und Maschinen zu lesen
   \item verschiedene Ansätze um Struktur von JSON Dokumenten zur Verwendung in APIs zu definieren. Teilweise miteinander verwendbar (definieren verschiedene Aspekte der Kommunikation)
   \item OpenAPI
   \item JSON:API
   \item Abbildung Beispiel Request und Response
+  \item Datenformat ist entscheidend. Bestimmte Formate haben native Unterstützung für Links und Forms (HTML, ATOM)
+  \item Media Type bestimmt Auswertung (und Anzeige) der Antwort. JSON, XML können genutzt werden. Client benötigt Informationen über Datenstruktur, um Links in diesen Dokumenten auszuwerten.
 \end{itemize}
-REST bleibt Implementierungsdetails schuldig\cite[vgl.][86]{REST}
