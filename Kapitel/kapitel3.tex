@@ -19,18 +19,17 @@ Die Kommunikation einer Ressource vom Server zum Client erfolgt über eine Repr�
 Somit bleibt der Ursprung der Daten hinter der Serverschnittstelle versteckt.
 Die Antwort des Servers enthält die Daten der Repräsentation und deren Metadaten.
 Anfrage und Antwort enthalten außerdem Kontrolldaten, \zB{} HTTP Request Methods, Status Codes und Header, um die Bedeutung der Nachricht zu vermitteln.\cite[vgl.][90f.]{REST}
+{\rowcolors{2}{white}{blue!30!white!70}}
 \begin{table}[h!]
   \begin{center}
-    \caption{REST Data Elements}\label{tab:REST Data Elemens}
-    \begin{tabularx}{\textwidth}{XXX}
-      \toprule
-      \textbf{Data Element} & \textbf{Web Equivalent} & \textbf{Example}\\
+    \caption{REST Data Elements, in Anlehnung an~\cite[88]{REST}}\label{tab:REST Data Elemens}
+    \begin{tabularx}{\linewidth}{m{0.2\linewidth}m{0.33\linewidth}X}
+      \rowcolor{blue!40!white!50!black!10}\textbf{Data Element} & \textbf{Web Equivalent} & \textbf{Example}\\
       \midrule
       resource & the intended conceptual target of a hypertext reference & a list of events\\
       resource identifier & URI & http://example.com/events\\
-      representation data & HTML, JSON Document, PNG image & \{events:[\{title:\dots\},\{\dots\}]\}\\
-      representation metadata & media type, last-modified time, ETag & Content-Type: application/json\\
-      & & Content-Encoding: gzip\\
+      representation data & HTML, JSON Document, PNG image & \{events:[\{id:4,title:\dots\},\{\dots\}]\}\\
+      representation metadata & media type, last-modified time, ETag & Content-Type: application/json, Content-Encoding: gzip\\
       control data & if-modified-since, cache-control, request method & GET, Cache-Control: no-cache\\
     \end{tabularx}
   \end{center}
@@ -71,12 +70,15 @@ Für die Schnittstellen der Komponenten gelten folgende Grundsätze:\cite[vgl.][
   \item Die Interaktion mit einer Ressource, d.h.\ das Abfragen und Manipulieren derselben erfolgt über eine Repräsentation der Ressource.
   \item Nachrichten müssen so selbsterklärend sein, dass sie von der Schnittstelle verstanden und verarbeitet werden können.
   \item \foreigntextcquote{english}[82]{REST}{hypermedia as the engine of application state} (HATEOAS): Der Hypertext beschreibt den Zustand der Anwendung und die Möglichkeiten der Veränderung desselben.
+  Folgt der Client einem Link im Hypertext und fordert eine neue Repräsentation an, so ändert er seinen Zustand.
+  Dieses Prinzip ist daher auch namensgebend für die Architektur des Representational State Transfer~\cite[vgl.][103f.]{TN_libero_mab21658382}.
 \end{itemize}
 \par
 Durch die generischen Client- und Serverschnittstellen, die selbstbeschreibenden Nachrichten und die zustandslose Kommunikation kann eine REST Anwendung leicht von Schichten profitieren.
 Keine einzelne Komponente benötigt Kenntnis des gesamten Informationsweges, sondern sieht nur die Komponenten, mit denen sie direkt interagiert, sodass zwischen
 User-Agent und Origin-Server Zwischenkomponenten eingeführt werden können, um spezifische Aufgaben, wie Caching, Kapselung, Load Balancing und Datentransformation, zu übernehmen.\cite[vgl.][99]{REST}
 Die so verbesserte Skalierbarkeit des Servers bringt jedoch mehr Datenverarbeitung durch die Zwischenkomponenten und somit höhere Latenzzeiten mit sich.\cite[vgl.][83,98]{REST}
+TODO: a, b, c erklären
 \begin{figure}[h]
   \centering
   \fbox{\includegraphics[width=\linewidth]{REST-process-view.png}}
@@ -84,10 +86,14 @@ Die so verbesserte Skalierbarkeit des Servers bringt jedoch mehr Datenverarbeitu
 \end{figure}
 
 \section{Implementierung von RESTful APIs}
-Die REST Architektur ist generell protokollunabhängig, durch die Arbeit von Fielding an HTTP und URI sind diese jedoch sehr geeignet für die Implementierung und waren auch das erste Anwendungsfeld.\cite[vgl.][109,116]{REST}
 Eine API, die dem REST Architekturstil folgt, wird RESTful genannt.
 Da die Dissertation von Fielding jedoch einige Implementierungsdetails schuldig bleibt bzw.\ bewusst \textcquote[86]{REST}{Details der Komponentenimplementierung und Protokollsyntax [ignoriert]}, wurde der Begriff RESTful API mit der Zeit aufgeweicht und für APIs verwendet, die grundlegende Anforderungen nicht erfüllen.\cite[vgl.][]{fieldBlog}
-\par
+Die REST Architektur ist generell protokollunabhängig, obwohl durch die Arbeit von Fielding an HTTP und URI diese für die Implementierung sehr geeignet sind und auch das erste Anwendungsfeld waren~\cite[vgl.][109,116]{REST}.
+Laut Richardson enthalten die Webstandards URI, HTTP und HTML die Randbedingungen der REST-Architektur, sodass eine API dieselben nur richtig gebrauchen muss, um als RESTful zu gelten~\cite[vgl.][]{Richardson}.
+\subsubsection{Richardson Maturity Model}
+Richardson beschreibt vier Level, um Webservices qualitativ zu klassifizieren und ihre Konformität zum REST-Architekturstil auszudrücken~\cite[vgl.][]{Desrosiers}.
+
+
 \begin{itemize}
   \item Richardson Maturity Model ermöglicht Bestimmung wie REST konform Web service (API) ist
   \item Level 0
