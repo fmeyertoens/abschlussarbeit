@@ -225,17 +225,31 @@ Je nach für die Abfrage verwendetem Gerät unterscheiden sich die Abfragezeiten
   \begin{itemize}
     \item POST response wird normalerweise nicht gecacht
     \item standardmäßig keine ID für caching vorhanden. Empfehlung: API sollte ID pro Objekt bereitstellen
+    \item globale ID über alle Tabellen/Backendservices nötig, mit schema typ verbinden
+    \item einzelne queries cachen aufgrund verschachtelung nicht sinnvoll, objekte aus query extrahieren
   \end{itemize}
 \end{itemize}
 
 \section{Batching/Deduping}
 \begin{itemize}
   \item GraphQL queries können parallel ausgewertet werden, Mutations nicht
+  \item Dataloader verhindert gleiche Daten mehrmals Anforderungen
+  \item wartet auf alle Resolver, minimale Anzahl requests ausgeführt
 \end{itemize}
 
 \section{Fehlerbehandlung}
+\begin{itemize}
+  \item GraphQL gibt error Feld zurück
+  \item 200 OK auch bei Fehler
+\end{itemize}
 
 \section{Sicherheit}
+\begin{itemize}
+  \item queries können komplex werden und server stark belasten
+  \item apollo safe listing: tatsächlich genutzte Queries zur Entwicklungszeit extrahieren und whitelisten
+  \item nur query id schicken, ast kann vorher berechnet werden -> schnellere ausführung, nicht möglich bei public api
+  \item angriffe und missbrauch vermeiden
+\end{itemize}
 
 \section{Kosten}
 
@@ -249,6 +263,8 @@ Je nach für die Abfrage verwendetem Gerät unterscheiden sich die Abfragezeiten
     \item Referenzimplementierung in JavaScript
     \item Zusatztools von Facebook (Dataloader, Relay)
     \item Tool kann Abfragekomplexität zu Entwicklungszeit ermitteln (mit vergangenen Messwerten)
+    \item Introspektion hilft, statische Validierung (type checking)
+    \item Apollo Client/server: Laufzeitanalyse, graphnutzung und graphänderungen tracken
   \end{itemize}
   \item REST: fehlende Standards (in Bezug auf linkelemente) macht die Entwicklung von Tools schwierig
 \end{itemize}
