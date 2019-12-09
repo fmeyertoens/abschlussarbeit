@@ -1,1 +1,26 @@
 \addchap{Anlagen}
+\noindent\textbf{Anlage 1}
+{\rowcolors{2}{white}{blue!30!white!70}
+\begin{table}[h!]
+  \begin{center}
+    \caption{Zeitdifferenz zwischen GraphQL und REST}\label{tab:graphql-rest}
+    \begin{tabularx}{\linewidth}{Xrr}
+      \rowcolor{blue!40!white!50!black!10}\textbf{Szenario} & \textbf{relativ} & \textbf{absolut (in ms)}\\
+      \midrule
+      Data in Memory | Server Heroku & 33\% & 38,81\\
+      DB Cloud | Server Heroku & 23\% & 83,38\\
+      DB Cloud | Server Lokal & 21\% & 41,16\\
+      \bottomrule
+      arithmetisches Mittel der Klassen & 26\% & 54,45\\
+    \end{tabularx}
+  \end{center}
+\end{table}
+}
+\par
+\vspace{1cm}
+\noindent\textbf{Anlage 2}
+Alle Messungen sind auf dem beigelegten Datenträger in einer Excel-Datei zu finden.
+\par
+\vspace{1cm}
+\noindent\textbf{Anlage 3}
+Der Quellcode zur für den Vergleich verwendeten Software (VueJS-Client, REST-Server, GraphQL-Server) ist auf dem beigelegten Datenträger zu finden.

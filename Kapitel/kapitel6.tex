@@ -1,7 +1,15 @@
 \chapter{Fazit}
 
 \section{Zusammenfassung}
-
+Die vorliegende Arbeit konnte die anfangs gestellten Forschungsfragen teilweise beantworten.
+GraphQL bietet deutliche Vorteile in den Bereichen Abfrageflexibilität und Versionierung, sowie Datenaufkommen, kann jedoch nicht die Performance von REST-Abfragen erreichen.
+Entwicklerwerkzeuge und Bibliotheken sind für beide Ansätze zu finden.
+Die Eigenschaft der Introspektion von GraphQL ermöglicht aber bessere statische Analysen zur Entwicklungszeit.
+GraphQL macht keinen Gebrauch von URI und den HTTP Verben, sowie Status Codes und verzichtet damit auf die Vorteile der durch diese Protokolle beschriebenen Schnittstellen, welche Kernelemente des REST-Architekturstils sind.
+Aufgrund der Flexibilität von GraphQL, eignet es sich besonders für öffentliche APIs und APIs mit vielen verschiedenen Clients, da deren Anforderungen bei der Entwicklung der API nicht bekannt sein müssen und das Schema individuelle Anfragen ermöglicht.
+Der im Rahmen dieser Arbeit entstandene Vergleichsprototyp kann weiter ausgebaut und zum allgemeinen Vergleich zweier APIs genutzt werden.
 \section{Kombinierte Verwendung von GraphQL und REST}
-
-\section{Ausblick}
+GraphQL und REST können gemeinsam eingesetzt werden.
+REST kann deutlich leichter mit Daten umgehen, die sich nicht oder nur schwer in Text serialisieren lassen, wie Bild-, Video- und Binärdateien.
+GraphQL kann auch als Schnittstelle zu anderen, möglicherweise REST-APIs dienen und diese in das Schema integrieren.
+Dieser Aspekt konnte aus Zeitgründen nicht weiter erörtert werden.

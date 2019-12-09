@@ -36,10 +36,10 @@ Der Rückgabewert des Feldes ist ein Array, welches Eventobjekte enthält.
 
 \subsubsection{Abfragen}
 Eine GraphQL-Abfrage (Query) beschreibt deklarativ, welche Daten vom Server erwartet werden~\cite[vgl.][]{GraphQL-spec-github}
-Eine Abfrage beginnt üblicherweise mit einem der drei Root-Typen, gefolgt von einem optionalen Query-Namen.
+Üblicherweise beginnt eine Query mit einem der drei Root-Typen, gefolgt von einem optionalen Query-Namen.
 Die Abfrage richtet sich nach dem Schema und kann durch die Referenzen zwischen den Typen beliebig tief geschachtelt werden.
 Alle Felder, die ein Client erhalten möchte, müssen in der Query angegeben werden.
-Eine Abfrage kann mit Variablen parametrisiert werden, damit die Query leichter wiederverwendbar ist und nicht manuell verkettet werden muss.
+Queries können mit Variablen parametrisiert werden, damit die sie leichter wiederverwendbar sind und nicht manuell verkettet werden müssen.
 Folgende Query könnte auf dem vorangegangenen Schema ausgeführt werden:
 \begin{figure}[h]
   \centering
