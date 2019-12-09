@@ -16,7 +16,7 @@ Diese sollen im Folgenden erörtert werden.
 \subsubsection{Typsystem}
 Das Schema beschreibt die API eines GraphQL-Servers durch die GraphQL Schema Definition Language (SDL).
 Teil der SDL ist das Typsystem, womit ausgedrückt werden kann, welche Datenobjekte die API zur Verfügung stellt~\cite[vgl.][]{GraphQL-spec-github}.
-Einstiegspunkt in das Schema bilden die drei Root-Types, welche nach Konvention \emph{query}, \emph{mutation} und \emph{subscription} genannt werden.
+Einstiegspunkt in das Schema bilden die drei Root-Typen, welche nach Konvention \emph{query}, \emph{mutation} und \emph{subscription} genannt werden.
 Alle Felder dieser drei Objekte stellen die Operationen dar, welche die API anbietet.
 Unter \emph{query} werden alle Abfragetypen gesammelt, welche in einer REST-API mit GET angefragt werden würden, während zu \emph{mutation} alle Modifikationsoperationen gehören, entsprechend PUT, POST, PATCH, DELETE.
 \emph{Subscription} ermöglicht es Datenströme zu senden.
@@ -34,88 +34,66 @@ Der Rückgabewert des Feldes ist ein Array, welches Eventobjekte enthält.
   \caption{GraphQL Beispielschema}\label{code:gql-schema}
 \end{figure}
 
-\begin{itemize}
-  \item Query Syntax
-  \begin{itemize}
-    \item Abbildung Beispiel Query
-    \item GraphQL Abfrage beschreibt deklarativ welche Daten erwartet werden
-    \item Antwort ist üblicherweise JSON mit der gleichen Struktur
-    \item Abfragen können geschachtelt werden
-    \item bei Objekttyp muss mind 1 Feld angegeben werden
-    \item Fragmente
-    \begin{itemize}
-      \item Abbildung Beispiel Fragment
-      \item sammlung von Feldern von einem Typ
-      \item verhindert Dopplung von mehreren Feldern in Abfrage
-      \item ermöglicht typbasierte Feldselektion
-    \end{itemize}
-    \item mehrere gleiche queries mit alias möglich
-    \item query können variablen in map übergeben werden, no manual string construction escaping
-  \end{itemize}
-  \item Introspektion
-  \begin{itemize}
-    \item Spezialfelder beginnend mit doppelt Unterstrich
-    \item \_\_schema, \_\_typename
-    \item Metadaten über GraphQL Schemas
-    \item Sinn ist Nutzung durch Entwicklungstools
-    \item ermöglicht statische Validierung: GraphQL Abfrage kann zu Entwicklungszeit geprüft werden
-  \end{itemize}
-  \item Referenzen werden unsichtbar, da von GraphQL Server automatisch aufgelöst (Performance beachten!)
-  \item ein Endpunkt (kein Nutzen von URIs)
-  \item jede Abfrage mit POST (kein Nutzen von HTTP Methoden), query in query feld in json payload
-  \item immer 200 OK status code
-  \item keine URI nutzung -> level 0 mmr
-  \item application/graphql media type
-  \item nicht im Spec festgelegt (da netzwerkunabhängig), aber praxis
-  \item Semantik der Abfrage von Server ausgewertet (welche der CRUD Operationen)
-\end{itemize}
-
-% \begin{figure}[h]
-%   \centering
-%   \fbox{\includegraphics[width=\linewidth]{}}
-%   \caption{REST~\cite[84]{REST}}\label{img:REST-diss}
-% \end{figure}
-
+\subsubsection{Abfragen}
+Eine GraphQL-Abfrage (Query) beschreibt deklarativ, welche Daten vom Server erwartet werden~\cite[vgl.][]{GraphQL-spec-github}
+Eine Abfrage beginnt üblicherweise mit einem der drei Root-Typen, gefolgt von einem optionalen Query-Namen.
+Die Abfrage richtet sich nach dem Schema und kann durch die Referenzen zwischen den Typen beliebig tief geschachtelt werden.
+Alle Felder, die ein Client erhalten möchte, müssen in der Query angegeben werden.
+Eine Abfrage kann mit Variablen parametrisiert werden, damit die Query leichter wiederverwendbar ist und nicht manuell verkettet werden muss.
+Folgende Query könnte auf dem vorangegangenen Schema ausgeführt werden:
 \begin{figure}[h]
   \centering
-  \begin{minted}{http}
-    HTTP/1.1 200 OK
-  
-    {
-      book: {
-        id: 1,
-        title: "REST in practice",
-        author: "http://api.com/author/10",
-        coverImage: "http://api.com/books/1/cover.jpg",
-        reviews: "http://api.com/books/1/reviews?first=10",
-        relatedBooks: [
-          "http://api.com/books/14"
-        ],
-        next: "http://api.com/books/2",
-      }
-    }
-  \end{minted}
-  \caption{Level 3 Hypermedia JSON Response}\label{code:lvl3}
+  \fbox{\includegraphics[width=0.5\linewidth]{graphql-query.png}}
+  \caption{GraphQL Query}\label{img:graphql-query}
 \end{figure}
+\par
+Die Antwort ist üblicherweise ein JSON-Objekt mit der gleichen Struktur, wie die Abfrage.
+\begin{figure}[h]
+  \centering
+  \fbox{\includegraphics[width=0.6\linewidth]{graphql-query-response.png}}
+  \caption{Die Antwort zu~\ref{img:graphql-query}}\label{img:graphql-response}
+\end{figure}
+\par
+Eine GraphQL API ermöglicht Introspektion, d.h.\ dass auf allen Typen spezielle Felder abgefragt werden können, die das Schema selbst und typspezifische Metainformationen zurückgeben.
+Diese Eigenschaft kann durch Entwicklungswerkzeuge genutzt werden, um zur Entwicklungszeit automatische Vervollständigung oder statische Validierung der Abfragen anzubieten~\cite[vgl.][]{Postman-GraphQL}
+\par
+Die GraphQL Spezifikation macht keine Angaben zum Übertragungsprotokoll.
+Es ist jedoch durch die meisten Implementierungen über HTTP vorgegeben, dass jede Anfrage mit der HTTP POST Methode und dem Media Type \emph{application/graphql} an eine einzige URI gesendet wird.
+Weiterhin antwortet ein GraphQL-Server immer mit dem Status Code 200, wobei die Daten oder eventuelle Fehler im Response Body enthalten sind.
+Nach dem Richardson Maturity Model entspräche eine GraphQL-API damit dem Level 0.
 
-\section{Server-Execution}
-\begin{itemize}
-  \item request empfangen
-  \item lexing: zeichenstream in graphql tokens umgewandelt
-  \item parsing: semantik korrekt, struktur
-  \item lexer und parser algorithmus nicht im spec festgelegt
-  \item ermöglicht spezifische optimierungen
-  \item server validiert query mit schema, inputvalidierung
-  \item validierungsregeln im spec oder selbst festgelegt:
-  \item validierung erfolgt depth first
-  \item query Feld für Feld parallel ausgeführt
-  \item jedes Feld hat eigenen resolver
-  \item resolver für jedes Feld aufgerufen
-  \item resolver erfüllen wert nach schema
-  \item breadth-first (Abbildung), 3 und 4 parallel
-  \item parent result an child resolver weitergegeben
-  \item Felder in manchen Implementierungen als trivial automatisch aufgelöst
-  \item rückgabewert der Felder an Schema geprüft, evtl konvertiert
-  \item JSON kennt nur number, nicht int und float
-  \item graphql sendet nie etwas was nicht im schema ist
-\end{itemize}
+\section{Query-Execution}
+Die Verarbeitung einer Anfrage auf dem Server geschieht in 5 Schritten:
+\begin{enumerate}
+  \item Lexing
+  \item Parsing
+  \item Validierung der Variablen
+  \item Aufrufen der Resolver
+  \item Validierung der Rückgabewerte
+\end{enumerate}
+Nachdem eine Query eingegangen ist, wird diese, aufgrund der von GraphQL festgelegten Grammatik, von einem Zeichenstrom in eine Auflistung der GraphQL Tokens umgewandelt~\ref{img:graphql-lexing}.
+\begin{figure}[h]
+  \centering
+  \fbox{\includegraphics[width=0.9\linewidth]{graphql-lexing.png}}
+  \caption{Transformation einer Query durch Lexing~\cite{JoudreyLexParse}}\label{img:graphql-lexing}
+\end{figure}
+Die Tokens werden anschließend von einem Parser auf strukturelle Richtigkeit geprüft und in einem Abstract Syntax Tree (AST) zusammengefasst, der die Query repräsentiert und schrittweise durchlaufen werden kann, um die Abfrage zu erfüllen~\ref{img:graphql-parsing}.
+Der Algorithmus für Lexing und Parsing ist von der GraphQL Spezifikation nicht vorgegeben und kann daher von programmiersprachenspezifischen Datenstrukturen Gebrauch machen bzw.\ verschieden optimiert werden.
+\begin{figure}[h]
+  \centering
+  \fbox{\includegraphics[width=0.7\linewidth]{graphql-ast.png}}
+  \caption{Transformation der Query Tokens in den Abstract Syntax Tree~\cite{JoudreyLexParse}}\label{img:graphql-parsing}
+\end{figure}
+Anhand des AST und des Schemas wird die Abfrage und alle zugehörigen Variablen nach den in der Spezifikation vorgegebenen Regeln validiert~\cite[vgl.][]{JoudreyLexParse}.
+Um die gewünschten Daten zu erhalten, muss für jedes Feld ein sogenannter Resolver hinterlegt sein.
+Diese Funktion wird aufgerufen und gibt die angefragten Daten zurück.
+Es ist für GraphQL dabei transparent, woher die Daten kommen, d.h.\ ein Resolver könnte eine Datenbank oder eine andere API anfragen oder die Daten vom Dateisystem lesen.
+Bei einer Query werden die Feldresolver parallel ausgeführt (siehe 3 und 4~\ref{img:graphql-execution}), während sie bei Mutations sequenziell ausgeführt werden.
+\begin{figure}[h]
+  \centering
+  \fbox{\includegraphics[width=0.8\linewidth]{graphql-query-execution.png}}
+  \caption{Aufrufen der Resolverfunktionen~\cite{BurkN}}\label{img:graphql-execution}
+\end{figure}
+Abschließend werden die Rückgabewerte anhand des Schemas validiert und, falls möglich, in den richtigen Typ konvertiert.
+An dieser Stelle zeigt sich ein Nachteil von JSON als Übertragungsprotokoll: GraphQL unterscheidet zwischen Ganzzahlen und Fließkommazahlen, JSON jedoch nicht.
+Die Validierung ist notwendig, damit der GraphQL-Server die API erfüllt und nur Daten sendet, die im Schema aufgeführt sind.
